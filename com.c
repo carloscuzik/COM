@@ -12,7 +12,6 @@ void geraAdd(){
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
- 	
 	tabela = insere_lista(tabela,aux);
 }
 
@@ -22,7 +21,6 @@ void geraSub(){
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
-
 	tabela = insere_lista(tabela,aux);
 }
 
@@ -32,7 +30,6 @@ void geraDiv(){
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
- 	
 	tabela = insere_lista(tabela,aux);
 }
 
@@ -42,7 +39,6 @@ void geraMul(){
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
- 	
 	tabela = insere_lista(tabela,aux);
 }
 
@@ -73,7 +69,6 @@ void gerarConst(int p1){
 	}
 	aux.p2=-1;
 	aux.label = -1;
-
 	tabela = insere_lista(tabela,aux);
 }
 
@@ -94,7 +89,6 @@ void gerarLoad(int pos){
 	aux.p1=pos;
 	aux.p2=-1;
 	aux.label = -1;
-
 	tabela = insere_lista(tabela,aux);
 }
 void geraStore(int pos){
@@ -103,7 +97,6 @@ void geraStore(int pos){
 	aux.p1=pos;
 	aux.p2=-1;
 	aux.label = -1;
-
 	tabela = insere_lista(tabela,aux);
 }
 void gera_ini_print(){
@@ -112,7 +105,6 @@ void gera_ini_print(){
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
-
 	tabela = insere_lista(tabela,aux);
 }
 void geraInvoke(){
@@ -121,7 +113,6 @@ void geraInvoke(){
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
-
 	tabela = insere_lista(tabela,aux);
 }
 void geraldc(char literal[]){
@@ -141,19 +132,31 @@ void geraldc(char literal[]){
 	tabela = insere_lista(tabela,aux);
 }
 
-
-
+void insereNaTabela(Lista_INT* listaid,int tipo){
+	if(listaid == NULL){
+		printf("nao deu certo\n");
+		return;
+	}
+	No_lista_INT *aux = listaid->topo;
+	while(aux!=NULL){
+		tabela_simbolos[ultima_pos_tab_sim].pos = ultima_pos_tab_sim+1;
+		tabela_simbolos[ultima_pos_tab_sim].tipo = tipo;
+		strcpy (tabela_simbolos[ultima_pos_tab_sim].id,aux->info);
+		ultima_pos_tab_sim++;
+		aux = aux->proximo;
+	}
+}
 
 //LISTAAAAAAAAAAAAA
-
 void inicializa_lista(Lista **lista){
 	(*lista) = (Lista*) malloc(sizeof(Lista));
 	if((*lista) == NULL){
-		printf("deu errado :(     ):\n");
+		printf("deu errado :(  ):\n");
 	}else{
 		(*lista)->topo = NULL;
 	}
 }
+
 Lista * insere_lista(Lista *lista, Codigo info){
 	if(lista == NULL){
 		inicializa_lista(&lista);
@@ -174,10 +177,7 @@ Lista * insere_lista(Lista *lista, Codigo info){
 	return lista;
 }
 
-
-
-//LISTAAAAAAAAAAAAA
-
+//OTRAAAAAAA    LISTAAAAAAAAAAAAA
 Lista_INT *inicializa_lista_INT(char id[]){
 	Lista_INT *lista;
 	lista = (Lista_INT*) malloc(sizeof(Lista_INT));
@@ -189,6 +189,7 @@ Lista_INT *inicializa_lista_INT(char id[]){
 	insere_lista_INT(lista,id);
 	return lista;
 }
+
 void insere_lista_INT(Lista_INT *lista, char info[]){
 	if(lista == NULL){
 		printf("deu muita merda\n");
@@ -209,26 +210,6 @@ void insere_lista_INT(Lista_INT *lista, char info[]){
 }
 
 
-
-
-void insereNaTabela(Lista_INT* listaid,int tipo){
-	if(listaid == NULL){
-		printf("nao deu certo\n");
-		return;
-	}
-	No_lista_INT *aux = listaid->topo;
-	int i;
-	while(aux!=NULL){
-		tabela_simbolos[ultima_pos_tab_sim].pos = ultima_pos_tab_sim+1;
-		tabela_simbolos[ultima_pos_tab_sim].tipo = tipo;
-		strcpy (tabela_simbolos[ultima_pos_tab_sim].id,aux->info);
-		ultima_pos_tab_sim++;
-		aux = aux->proximo;
-	}
-}
-
-
-
 void imprime_Tabela(){
 	No_lista* aux;
 	if(tabela==NULL){
@@ -239,18 +220,14 @@ void imprime_Tabela(){
 
 		printf(".class public Alo\n");
 		printf(".super java/lang/Object\n\n");
-
 		printf(".method public <init>()V\n");
 		printf("  aload_0\n");
-
 		printf("  invokenonvirtual java/lang/Object/<init>()V\n");
 		printf("  return\n");
 		printf(".end method\n\n");
-
 		printf(".method public static main([Ljava/lang/String;)V\n");
 		printf("  .limit stack 4\n");
 		printf("  .limit locals 6\n\n");
-
 		while(aux!=NULL){
 			imprime_comando(aux->info.inst);
 			if(aux->info.inst!=18){
@@ -265,7 +242,6 @@ void imprime_Tabela(){
 			}
 			aux = aux->proximo;
 		}
-
 		printf("  return\n");
 		printf(".end method\n");
 	}

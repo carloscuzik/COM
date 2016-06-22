@@ -39,7 +39,7 @@ Tipo: TINT {$$.tipo = 0;}
 	| TSTRING {$$.tipo = 1;}
 	;
 ListaId: ListaId TVIR TID//{$$.listaid = insere_lista_INT($1.listaid,$3.id);}
-	| TID{$$.listaid = inicializa_lista_INT($1.id);}
+	| TID {$$.listaid = inicializa_lista_INT($1.id);}
 	;
 BLoco: TACHAVES ListaCmd TFCHAVES
 	;
@@ -78,29 +78,29 @@ ChamadaFuncao: TID TAPAR ListaParametros TFPAR TPVIR
 ListaParametros: ListaParametros TVIR Expr
 	| Expr
 	;
-Expr: Expr TADD Termo{geraAdd();} 
-	| Expr TSUB Termo{geraSub();} 
+Expr: Expr TADD Termo {geraAdd();} 
+	| Expr TSUB Termo {geraSub();} 
 	| Termo
 	;
-Termo: Termo TMUL Fator{geraMul();} 
-	| Termo TDIV Fator{geraDiv();} 
+Termo: Termo TMUL Fator {geraMul();} 
+	| Termo TDIV Fator {geraDiv();} 
 	| Fator
 	;
 Fator: TNUM 
 	| TAPAR Expr TFPAR 
-	| TID{gerarLoad(posTabSim($1.id));}
-	| TCONST{gerarConst($1.cconst);}
+	| TID {gerarLoad(posTabSim($1.id));}
+	| TCONST {gerarConst($1.cconst);}
 	;
-ExpressaoRelacional: Expr TMENIGUAL Expr
-	| Expr TMAIIGUAL Expr
-	| Expr TMAI Expr
-	| Expr TMEN Expr
-	| Expr TIGUAL Expr
-	| Expr TDIF Expr
+ExpressaoRelacional: Expr TMENIGUAL Expr {}
+	| Expr TMAIIGUAL Expr {}
+	| Expr TMAI Expr {}
+	| Expr TMEN Expr {}
+	| Expr TIGUAL Expr {}
+	| Expr TDIF Expr {}
 	;
-ExpressaoLogica: TNOT ExpressaoRelacional
-	| ExpressaoRelacional TAND ExpressaoRelacional
-	| ExpressaoRelacional TOR ExpressaoRelacional
+ExpressaoLogica: TNOT ExpressaoRelacional {}
+	| ExpressaoRelacional TAND ExpressaoRelacional {}
+	| ExpressaoRelacional TOR ExpressaoRelacional {}
 	| ExpressaoRelacional
 	;
 %%
@@ -108,6 +108,7 @@ ExpressaoLogica: TNOT ExpressaoRelacional
 
 int yyerror (char *str){
 	printf("%s - antes %s\n", str, yytext);
+	return 0;
 } 		 
 
 int yywrap(){

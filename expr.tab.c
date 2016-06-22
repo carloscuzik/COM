@@ -1432,8 +1432,62 @@ yyreduce:
 #line 1433 "expr.tab.c" /* yacc.c:1646  */
     break;
 
+  case 58:
+#line 94 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1439 "expr.tab.c" /* yacc.c:1646  */
+    break;
 
-#line 1437 "expr.tab.c" /* yacc.c:1646  */
+  case 59:
+#line 95 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1445 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 60:
+#line 96 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1451 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 61:
+#line 97 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1457 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 62:
+#line 98 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1463 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 63:
+#line 99 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1469 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 64:
+#line 101 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1475 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 65:
+#line 102 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1481 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 66:
+#line 103 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1487 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1491 "expr.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1667,6 +1721,7 @@ yyreturn:
 
 int yyerror (char *str){
 	printf("%s - antes %s\n", str, yytext);
+	return 0;
 } 		 
 
 int yywrap(){
