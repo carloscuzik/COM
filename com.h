@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* #define iconst_1 1
-#define iconst_2 2
-#define iconst_3 3
-#define iconst_4 4
-#define iconst_5 5*/
 #define iadd 1
 #define isub 2
 #define idiv 3
@@ -28,11 +23,7 @@
 #define STRING 1
 #define INT 0
 
-
-
-
 //LISTA DE INTSSSSSSSSSSS
-
 typedef struct no_lista_int{
 	struct no_lista_int* proximo;
 	char info[128];
@@ -42,12 +33,7 @@ typedef struct $sss{
 	No_lista_INT* topo;
 }Lista_INT;
 
-
-
-
-
 //declaraçãoaaaaaaaaa
-
 typedef struct atributo{
 	int tipo;
 	Lista_INT *listaid;
@@ -66,7 +52,6 @@ typedef struct atributo{
  	int pos;
  }TabSim;
 
-
 //LISTAAAAAAAAAAAAAAAAA
 typedef struct no_lista{
 	struct no_lista* proximo;
@@ -77,40 +62,21 @@ typedef struct ${
 	No_lista* topo;
 }Lista;
 
- void geraAdd();
- void geraSub();
- void geraDiv();
- void geraMul();
- void gerarLoad(int pos);
- void geraStore(int pos);
- void gerarConst(int p1);
- int posTabSim(char id_procurado[128]);
+void geraAdd();
+void geraSub();
+void geraDiv();
+void geraMul();
+void gerarLoad(int pos);
+void geraStore(int pos);
+void gerarConst(int p1);
+int posTabSim(char id_procurado[128]);
 void gera_ini_print();
 void geraInvoke();
 void geraldc(char literal[]);
-
 void inicializa_lista(Lista **lista);
 Lista *insere_lista(Lista *lista, Codigo info);
-
-
-
-
-
-
-
-
-
 Lista_INT *inicializa_lista_INT(char info[]);
 void insere_lista_INT(Lista_INT *lista, char info[]);
-
-
-////////////////////////////////////////////////
 void insereNaTabela(Lista_INT* listaid,int tipo);
-
-
-
-
-
-
 void imprime_Tabela();
 void imprime_comando(int opcao);
