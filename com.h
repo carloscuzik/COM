@@ -20,7 +20,9 @@
 #define iconst_5 12
 #define iload 13
 #define istore 14
-
+#define getStatic 15
+#define invokevirtual_int 16
+#define invokevirtual_str 17
 
 #define STRING 1
 #define INT 0

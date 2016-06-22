@@ -106,9 +106,29 @@ void geraStore(int pos){
 
 	tabela = insere_lista(tabela,aux);
 }
-void gera_ini_print(){}
-void geraInvoke(){}
+void gera_ini_print(){
+	Codigo aux;
+	aux.inst = getStatic;
+	aux.p1=-1;
+	aux.p2=-1;
+	aux.label = -1;
+
+	tabela = insere_lista(tabela,aux);
+}
+void geraInvoke(){
+	Codigo aux;
+	aux.inst = invokevirtual_int;
+	aux.p1=-1;
+	aux.p2=-1;
+	aux.label = -1;
+
+	tabela = insere_lista(tabela,aux);
+}
 void geraldc(char literal[]){}
+
+
+
+
 //LISTAAAAAAAAAAAAA
 
 void inicializa_lista(Lista **lista){
@@ -201,7 +221,21 @@ void imprime_Tabela(){
 	}else{
 		aux = tabela->topo;
 		system("clear");
-		printf("IMPRESSÂOOOOOOOOOOOOOOOOOOOOOOO POOOOORRRRRRRRRAAAAAAAAAAAAAAAAAAAAA\n");
+
+		printf(".class public Alo\n");
+		printf(".super java/lang/Object\n\n");
+
+		printf(".method public <init>()V\n");
+		printf("  aload_0\n");
+
+		printf("  invokenonvirtual java/lang/Object/<init>()V\n");
+		printf("  return\n");
+		printf(".end method\n\n");
+
+		printf(".method public static main([Ljava/lang/String;)V\n");
+		printf("  .limit stack 2\n");
+		printf("  .limit locals 2\n\n");
+
 		while(aux!=NULL){
 				imprime_comando(aux->info.inst);
 				if(aux->info.p1!=-1){
@@ -212,49 +246,52 @@ void imprime_Tabela(){
 				}
 			aux = aux->proximo;
 		}
+
+		printf("  return\n");
+		printf(".end method\n");
 	}
 }
 
 void imprime_comando(int opcao){
 	switch(opcao){
 		case 1:
-			printf(".iadd\n");
+			printf("  .iadd\n");
 			break;
 			
 		case 2:
-			printf(".isub\n");
+			printf("  .isub\n");
 			break;
 			
 		case 3:
-			printf(".idiv\n");
+			printf("  .idiv\n");
 			break;
 			
 		case 4:
-			printf(".imul\n");
+			printf("  .imul\n");
 			break;
 			
 		case 5:
-			printf(".bipush\n");
+			printf("  .bipush ");
 			break;
 			
 		case 6:
-			printf(".iconst_0\n");
+			printf("  .iconst_0\n");
 			break;
 			
 		case 7:
-			printf(".iconst_1\n");
+			printf("  .iconst_1\n");
 			break;
 			
 		case 8:
-			printf(".iconst_2\n");
+			printf("  .iconst_2\n");
 			break;
 			
 		case 9:
-			printf(".iconst_3\n");
+			printf("  .iconst_3\n");
 			break;
 			
 		case 10:
-			printf(".\n");
+			printf("  .\n");
 			break;
 			
 		case 11:
@@ -262,15 +299,26 @@ void imprime_comando(int opcao){
 			break;
 
 		case 12:
-			printf(".iconst_5\n");
+			printf("  .iconst_5\n");
 			break;
 
 		case 13:
-			printf(".iload ");
+			printf("  .iload ");
 			break;
 
 		case 14:
-			printf(".istore ");
+			printf("  .istore ");
+			break;
+
+		case 15:
+			printf("  getstatic java/lang/System/out Ljava/io/PrintStream;\n");
+			break;
+
+		case 16:
+			printf("  invokevirtual java/io/PrintStream/println(I)V\n");
+			break;
+		case 17:
+			printf("  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
 			break;
 			
 	}
