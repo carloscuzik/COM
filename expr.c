@@ -3,8 +3,7 @@
 
 extern FILE *yyin;
 
-int main()
-{
+int main(){
 	FILE * in;
 	Lista * tabela;
 	printf("Entre com o nome do arquivo:\n");
