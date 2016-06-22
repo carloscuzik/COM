@@ -107,7 +107,7 @@ void geraStore(int pos){
 	tabela = insere_lista(tabela,aux);
 }
 void gera_ini_print(){}
-void geraInvoqke(){}
+void geraInvoke(){}
 void geraldc(char literal[]){}
 //LISTAAAAAAAAAAAAA
 

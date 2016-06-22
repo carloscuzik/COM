@@ -82,7 +82,7 @@ typedef struct ${
  void gerarConst(int p1);
  int posTabSim(char id_procurado[128]);
 void gera_ini_print();
-void geraInvoqke();
+void geraInvoke();
 void geraldc(char literal[]);
 
 void inicializa_lista(Lista **lista);

@@ -13,6 +13,7 @@ id (\_|{letra})+({digito}|\_|{letra})*
 "while" 	{return TWHILE;}
 "else"		{return TELSE;}
 "print"		{return TPRINT;}
+"M"			{return TM;}
 "read"		{return TREAD;}
 "+"			{return TADD;}
 "-"			{return TSUB;}
