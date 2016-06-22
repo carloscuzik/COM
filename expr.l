@@ -13,7 +13,6 @@ id (\_|{letra})+({digito}|\_|{letra})*
 "while" 	{return TWHILE;}
 "else"		{return TELSE;}
 "print"		{return TPRINT;}
-"M"			{return TM;}
 "read"		{return TREAD;}
 "+"			{return TADD;}
 "-"			{return TSUB;}
@@ -36,7 +35,7 @@ id (\_|{letra})+({digito}|\_|{letra})*
 "int" 		{return TINT;}
 "String" 	{return TSTRING;}
 "void" 		{return TVOID;}
-{literal}	{return TLITERAL;}
+{literal}	{strcpy(yylval.texto,yytext);return TLITERAL;}
 {id}    	{strcpy(yylval.id,yytext);return TID;}
 {num}		{yylval.cconst = atoi(yytext); return TCONST;}
 ","			{return TVIR;}

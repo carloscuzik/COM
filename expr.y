@@ -6,7 +6,7 @@
 %}
 
 %token TADD TMUL TSUB TDIV TAPAR TFPAR TMENIGUAL TMAIIGUAL TMEN TMAI TDIF TIG TAND TNUM TIF TWHILE TELSE
-TPRINT TREAD TOR TNOT TACHAVES TIGUAL TFCHAVES TINT TSTRING TVOID TLITERAL TID TVIR TPVIR TRET TCONST TM
+TPRINT TREAD TOR TNOT TACHAVES TIGUAL TFCHAVES TINT TSTRING TVOID TLITERAL TID TVIR TPVIR TRET TCONST
 %%
 
 Programa: ListaFuncoes BlocoPrincipal
@@ -55,8 +55,8 @@ Comando: CmdSe
 	;
 Retorno: TRET Expr TPVIR
 	;
-CmdSe: TIF TAPAR ExpressaoLogica TFPAR BLoco
-	| TIF TAPAR ExpressaoLogica TFPAR BLoco TELSE BLoco
+CmdSe: TIF TAPAR ExpressaoLogica TFPAR BLoco //{gera_fim_label($3);}
+	| TIF TAPAR ExpressaoLogica TFPAR BLoco TELSE BLoco //{gera_fim_label($3);}
 	;
 CmdEnquanto: TWHILE TAPAR ExpressaoLogica TFPAR BLoco
 	;
@@ -66,9 +66,9 @@ CmdAtrib: TID TIGUAL Expr TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TID TAPAR TFPAR TPVIR {geraStore(posTabSim($1.id));}
 	;
 CmdEscrita: TPRINT M TAPAR Expr TFPAR TPVIR{geraInvoke();}
-	| TPRINT M TAPAR TLITERAL TFPAR TPVIR {geraldc($4.id);}
+	| TPRINT M TAPAR TLITERAL TFPAR TPVIR {geraldc($4.texto);}
 	;
-M: TM {gera_ini_print();};
+M: {gera_ini_print();};
 CmdLeitura: TREAD TAPAR TID TFPAR TPVIR
 	;
 ChamadaFuncao: TID TAPAR ListaParametros TFPAR TPVIR
@@ -90,12 +90,12 @@ Fator: TNUM
 	| TID {gerarLoad(posTabSim($1.id));}
 	| TCONST {gerarConst($1.cconst);}
 	;
-ExpressaoRelacional: Expr TMENIGUAL Expr {}
-	| Expr TMAIIGUAL Expr {}
-	| Expr TMAI Expr {}
-	| Expr TMEN Expr {}
-	| Expr TIGUAL Expr {}
-	| Expr TDIF Expr {}
+ExpressaoRelacional: Expr TMENIGUAL Expr {if_icmp(le);}
+	| Expr TMAIIGUAL Expr {if_icmp(ge);}
+	| Expr TMAI Expr {if_icmp(gt);}
+	| Expr TMEN Expr {if_icmp(lt);}
+	| Expr TIGUAL Expr {if_icmp(eq);}
+	| Expr TDIF Expr {if_icmp(ne);}
 	;
 ExpressaoLogica: TNOT ExpressaoRelacional {}
 	| ExpressaoRelacional TAND ExpressaoRelacional {}

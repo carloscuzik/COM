@@ -1,7 +1,7 @@
 #include "com.h"
 
 Lista *tabela;
-
+int last_label = 0;
 //tabela c]de declarações
 TabSim tabela_simbolos[100];
 int ultima_pos_tab_sim = 0;
@@ -113,7 +113,7 @@ void geraInvoke(){
 void geraldc(char literal[]){
 	Codigo aux;
 	aux.inst = ldc;
-	aux.p1=-1;//n vdd deveria usar a variavel literal[]
+	aux.p1=-1;//na vdd deveria usar a variavel literal[]
 	aux.p2=-1;
 	strcpy(aux.p3,literal);
 	aux.label = -1;
@@ -126,6 +126,30 @@ void geraldc(char literal[]){
 	tabela = insere_lista(tabela,aux);
 }
 
+//Construção da parte de comparações
+void if_icmp(int tipo){
+	Codigo aux;
+	aux.inst = tipo;
+	aux.p1=-1;
+	aux.p2=-1;
+	aux.label = -1;
+	char label[3];
+	label[2] = '\0';
+	label[1] = last_label+48;
+	label[0] = 'L';
+	last_label++;
+	strcpy(aux.p3,label);
+	tabela = insere_lista(tabela,aux);
+}
+void gera_fim_label(char label[]){
+	Codigo aux;
+	aux.inst = fim_label;
+	aux.p1=-1;
+	aux.p2=-1;
+	aux.label = -1;
+	strcpy(aux.p3,label);
+	tabela = insere_lista(tabela,aux);
+}
 void insereNaTabela(Lista_INT* listaid,int tipo){
 	if(listaid == NULL){
 		printf("nao deu certo\n");
@@ -222,7 +246,7 @@ void imprime_Tabela(){
 		printf("  .limit locals 6\n\n");
 		while(aux!=NULL){
 			imprime_comando(aux->info.inst);
-			if(aux->info.inst!=18){
+			if(aux->info.inst<18){
 				if(aux->info.p1!=-1){
 					printf("%i\n",aux->info.p1);
 				}
@@ -230,7 +254,7 @@ void imprime_Tabela(){
 					printf("%i\n",aux->info.p2);
 				}
 			}else{
-				printf("%s\"\n",aux->info.p3);
+				printf("%s\n",aux->info.p3);
 			}
 			aux = aux->proximo;
 		}
@@ -291,7 +315,28 @@ void imprime_comando(int opcao){
 			printf("  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
 			break;
 		case ldc:
-			printf("  ldc \"");
+			printf("  ldc ");
+			break;
+		case eq:
+			printf("  .if_icmpeq ");
+			break;
+		case ne:
+			printf("  .if_icmpne ");
+			break;
+		case lt:
+			printf("  .if_icmplt ");
+			break;
+		case le:
+			printf("  .if_icmple ");
+			break;
+		case gt:
+			printf("  .if_icmpgt ");
+			break;
+		case ge:
+			printf("  .if_icmpge ");
+			break;
+		case fim_label:
+			printf("   ");
 			break;
 	}
 }

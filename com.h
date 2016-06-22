@@ -23,6 +23,16 @@
 #define STRING 1
 #define INT 0
 
+#define eq 19
+#define ne 20
+#define lt 21
+#define le 22
+#define gt 23
+#define ge 24
+
+#define fim_label 25
+
+
 //LISTA DE INTSSSSSSSSSSS
 typedef struct no_lista_int{
 	struct no_lista_int* proximo;
@@ -38,6 +48,7 @@ typedef struct atributo{
 	int tipo;
 	Lista_INT *listaid;
 	char id[128];
+	char texto[300];
 	int cconst;
 }Atributo;
 
@@ -80,3 +91,5 @@ void insere_lista_INT(Lista_INT *lista, char info[]);
 void insereNaTabela(Lista_INT* listaid,int tipo);
 void imprime_Tabela();
 void imprime_comando(int opcao);
+void if_icmp(int tipo);
+void gera_fim_label(char label[]);

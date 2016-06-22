@@ -77,8 +77,7 @@ extern int yydebug;
     TVIR = 287,
     TPVIR = 288,
     TRET = 289,
-    TCONST = 290,
-    TM = 291
+    TCONST = 290
   };
 #endif
 
