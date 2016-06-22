@@ -14,7 +14,6 @@ void geraAdd(){
 	aux.label = -1;
 	tabela = insere_lista(tabela,aux);
 }
-
 void geraSub(){
 	Codigo aux;
 	aux.inst = isub;
@@ -23,7 +22,6 @@ void geraSub(){
 	aux.label = -1;
 	tabela = insere_lista(tabela,aux);
 }
-
 void geraDiv(){
 	Codigo aux;
 	aux.inst = idiv;
@@ -32,7 +30,6 @@ void geraDiv(){
 	aux.label = -1;
 	tabela = insere_lista(tabela,aux);
 }
-
 void geraMul(){
 	Codigo aux;
 	aux.inst = imul;
@@ -41,7 +38,6 @@ void geraMul(){
 	aux.label = -1;
 	tabela = insere_lista(tabela,aux);
 }
-
 void gerarConst(int p1){
 	Codigo aux;
 	if (p1 == 0){
@@ -82,7 +78,6 @@ int posTabSim(char id_procurado[128]){
 	printf("id não encontrado %s\n",id_procurado);
 	return -1;
 }
-
 void gerarLoad(int pos){
 	Codigo aux;
 	aux.inst = iload;
@@ -117,7 +112,6 @@ void geraInvoke(){
 }
 void geraldc(char literal[]){
 	Codigo aux;
-	printf("literal :  %s\n",literal);
 	aux.inst = ldc;
 	aux.p1=-1;//n vdd deveria usar a variavel literal[]
 	aux.p2=-1;
@@ -176,7 +170,6 @@ Lista * insere_lista(Lista *lista, Codigo info){
 	}
 	return lista;
 }
-
 //OTRAAAAAAA    LISTAAAAAAAAAAAAA
 Lista_INT *inicializa_lista_INT(char id[]){
 	Lista_INT *lista;
@@ -209,7 +202,6 @@ void insere_lista_INT(Lista_INT *lista, char info[]){
 	}
 }
 
-
 void imprime_Tabela(){
 	No_lista* aux;
 	if(tabela==NULL){
@@ -217,7 +209,7 @@ void imprime_Tabela(){
 	}else{
 		aux = tabela->topo;
 		system("clear");
-
+		printf("---------------------------------------------------------\n");
 		printf(".class public Alo\n");
 		printf(".super java/lang/Object\n\n");
 		printf(".method public <init>()V\n");
@@ -238,88 +230,68 @@ void imprime_Tabela(){
 					printf("%i\n",aux->info.p2);
 				}
 			}else{
-				printf("literal: %s\"\n",aux->info.p3);
+				printf("%s\"\n",aux->info.p3);
 			}
 			aux = aux->proximo;
 		}
 		printf("  return\n");
 		printf(".end method\n");
+		printf("---------------------------------------------------------\n");
 	}
 }
 
 void imprime_comando(int opcao){
 	switch(opcao){
-		case 1:
+		case iadd:
 			printf("  .iadd\n");
 			break;
-			
-		case 2:
+		case isub:
 			printf("  .isub\n");
 			break;
-			
-		case 3:
+		case idiv:
 			printf("  .idiv\n");
 			break;
-			
-		case 4:
+		case imul:
 			printf("  .imul\n");
 			break;
-			
-		case 5:
+		case bipush:
 			printf("  .bipush ");
 			break;
-			
-		case 6:
+		case iconst_0:
 			printf("  .iconst_0\n");
 			break;
-			
-		case 7:
+		case iconst_1:
 			printf("  .iconst_1\n");
 			break;
-			
-		case 8:
+		case iconst_2:
 			printf("  .iconst_2\n");
 			break;
-			
-		case 9:
+		case iconst_3:
 			printf("  .iconst_3\n");
-			break;
-			
-		case 10:
-			printf("  .\n");
-			break;
-			
-		case 11:
+			break;	
+		case iconst_4:
 			printf(".iconst_4\n");
 			break;
-
-		case 12:
+		case iconst_5:
 			printf("  .iconst_5\n");
 			break;
-
-		case 13:
+		case iload:
 			printf("  .iload ");
 			break;
-
-		case 14:
+		case istore:
 			printf("  .istore ");
 			break;
-
-		case 15:
+		case getStatic:
 			printf("  getstatic java/lang/System/out Ljava/io/PrintStream;\n");
 			break;
-
-		case 16:
+		case invokevirtual_int:
 			printf("  invokevirtual java/io/PrintStream/println(I)V\n");
 			break;
-
-		case 17:
+		case invokevirtual_str:
 			printf("  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
 			break;
-
-		case 18:
+		case ldc:
 			printf("  ldc \"");
 			break;
-			
 	}
 }
