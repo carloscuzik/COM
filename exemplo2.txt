@@ -1,7 +1,7 @@
 {
 	String nome;
-	print("Qual o seu nome?");
+	print M ("Qual o seu nome?");
 	read(nome);
-	print("Ola ");
-	print(nome");
+	print M ("Ola ");
+	print M ("nome");
 }

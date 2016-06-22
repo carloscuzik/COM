@@ -67,7 +67,7 @@ CmdAtrib: TID TIGUAL Expr TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TID TAPAR TFPAR TPVIR {geraStore(posTabSim($1.id));}
 	;
 CmdEscrita: TPRINT M TAPAR Expr TFPAR TPVIR{geraInvoke();}
-	| TPRINT TAPAR TLITERAL TFPAR TPVIR
+	| TPRINT M TAPAR TLITERAL TFPAR TPVIR {geraldc($4.id);}
 	;
 M: TM {gera_ini_print();};
 CmdLeitura: TREAD TAPAR TID TFPAR TPVIR

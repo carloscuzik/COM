@@ -2,9 +2,9 @@
 	int a;
 	int b;
 	
-	print("Valor de A:");
+	print M ("Valor de A:");
 	read(a);
-	print("Valor de B:");
+	print M ("Valor de B:");
 	read(b);
 	while (a != b)
 	{
@@ -17,6 +17,6 @@
 			b = b - a;
 		}
 	}
-	print("\nRes=");
+	print M ("\nRes=");
 	print M (a);
 }

@@ -23,6 +23,7 @@
 #define getStatic 15
 #define invokevirtual_int 16
 #define invokevirtual_str 17
+#define ldc 18
 
 #define STRING 1
 #define INT 0
@@ -56,6 +57,7 @@ typedef struct atributo{
 
  typedef struct cod{
  	int label,inst,p1,p2;
+ 	char p3[200];
  }Codigo;
 
  typedef struct tabSim{

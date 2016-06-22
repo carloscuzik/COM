@@ -124,7 +124,22 @@ void geraInvoke(){
 
 	tabela = insere_lista(tabela,aux);
 }
-void geraldc(char literal[]){}
+void geraldc(char literal[]){
+	Codigo aux;
+	printf("literal :  %s\n",literal);
+	aux.inst = ldc;
+	aux.p1=-1;//n vdd deveria usar a variavel literal[]
+	aux.p2=-1;
+	strcpy(aux.p3,literal);
+	aux.label = -1;
+	tabela = insere_lista(tabela,aux);
+
+	aux.inst = invokevirtual_str;
+	aux.p1=-1;
+	aux.p2=-1;
+	aux.label = -1;
+	tabela = insere_lista(tabela,aux);
+}
 
 
 
@@ -233,17 +248,21 @@ void imprime_Tabela(){
 		printf(".end method\n\n");
 
 		printf(".method public static main([Ljava/lang/String;)V\n");
-		printf("  .limit stack 2\n");
-		printf("  .limit locals 2\n\n");
+		printf("  .limit stack 4\n");
+		printf("  .limit locals 6\n\n");
 
 		while(aux!=NULL){
-				imprime_comando(aux->info.inst);
+			imprime_comando(aux->info.inst);
+			if(aux->info.inst!=18){
 				if(aux->info.p1!=-1){
 					printf("%i\n",aux->info.p1);
 				}
 				if(aux->info.p2!=-1){
 					printf("%i\n",aux->info.p2);
 				}
+			}else{
+				printf("literal: %s\"\n",aux->info.p3);
+			}
 			aux = aux->proximo;
 		}
 
@@ -317,8 +336,13 @@ void imprime_comando(int opcao){
 		case 16:
 			printf("  invokevirtual java/io/PrintStream/println(I)V\n");
 			break;
+
 		case 17:
 			printf("  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
+			break;
+
+		case 18:
+			printf("  ldc \"");
 			break;
 			
 	}
