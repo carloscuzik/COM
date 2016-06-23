@@ -1,9 +1,13 @@
 #include "com.h"
 
 Lista *tabela;
-int last_label = 0;
+int last_label = 1;
 //tabela c]de declarações
 TabSim tabela_simbolos[100];
+int pilha_label[100];
+int pilha_while[100];
+int indice_label = 0;
+int indice_while = 0;
 int ultima_pos_tab_sim = 0;
 
 void geraAdd(){
@@ -133,23 +137,63 @@ void if_icmp(int tipo){
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
-	char label[3];
+	char label[5];
 	label[2] = '\0';
 	label[1] = last_label+48;
 	label[0] = 'L';
+	pilha_label[indice_label] = last_label;
+	indice_label++;
 	last_label++;
 	strcpy(aux.p3,label);
 	tabela = insere_lista(tabela,aux);
 }
-void gera_fim_label(char label[]){
+void gera_fim_if(){
 	Codigo aux;
 	aux.inst = fim_label;
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
+	char label[5];
+	label[2] = '\0';
+	indice_label--;
+	label[1] = pilha_label[indice_label]+48;
+	label[0] = 'L';
 	strcpy(aux.p3,label);
 	tabela = insere_lista(tabela,aux);
 }
+
+void gera_init_while(){
+	Codigo aux;
+	aux.inst = fim_label;
+	aux.p1=-1;
+	aux.p2=-1;
+	aux.label = -1;
+	char label[5];
+	label[2] = '\0';
+	label[1] = last_label+48;
+	label[0] = 'L';
+	pilha_while[indice_while] = last_label;
+	indice_while++;
+	last_label++;
+	strcpy(aux.p3,label);
+	tabela = insere_lista(tabela,aux);
+}
+
+void gera_fim_while(){
+	Codigo aux;
+	aux.inst = _goto;
+	aux.p1=-1;
+	aux.p2=-1;
+	aux.label = -1;
+	char label[5];
+	label[2] = '\0';
+	indice_while--;
+	label[1] = pilha_while[indice_while]+48;
+	label[0] = 'L';
+	strcpy(aux.p3,label);
+	tabela = insere_lista(tabela,aux);
+}
+
 void insereNaTabela(Lista_INT* listaid,int tipo){
 	if(listaid == NULL){
 		printf("nao deu certo\n");
@@ -254,7 +298,11 @@ void imprime_Tabela(){
 					printf("%i\n",aux->info.p2);
 				}
 			}else{
-				printf("%s\n",aux->info.p3);
+				printf("%s",aux->info.p3);
+				if(aux->info.inst==25){
+					printf(":");
+				}
+				printf("\n");
 			}
 			aux = aux->proximo;
 		}
@@ -336,7 +384,10 @@ void imprime_comando(int opcao){
 			printf("  .if_icmpge ");
 			break;
 		case fim_label:
-			printf("   ");
+			printf(" ");
+			break;
+		case _goto:
+			printf("  goto ");
 			break;
 	}
 }

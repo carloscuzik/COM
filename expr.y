@@ -55,11 +55,12 @@ Comando: CmdSe
 	;
 Retorno: TRET Expr TPVIR
 	;
-CmdSe: TIF TAPAR ExpressaoLogica TFPAR BLoco //{gera_fim_label($3);}
-	| TIF TAPAR ExpressaoLogica TFPAR BLoco TELSE BLoco //{gera_fim_label($3);}
+CmdSe: TIF TAPAR ExpressaoLogica TFPAR BLoco {gera_fim_if();}
+	| TIF TAPAR ExpressaoLogica TFPAR BLoco TELSE BLoco {gera_fim_if();}
 	;
-CmdEnquanto: TWHILE TAPAR ExpressaoLogica TFPAR BLoco
+CmdEnquanto: TWHILE InitWhile TAPAR ExpressaoLogica TFPAR BLoco {gera_fim_while();gera_fim_if();}
 	;
+InitWhile: {gera_init_while();};
 CmdAtrib: TID TIGUAL Expr TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TLITERAL TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TID TAPAR ListaId TFPAR TPVIR {geraStore(posTabSim($1.id));}

@@ -31,6 +31,7 @@
 #define ge 24
 
 #define fim_label 25
+#define _goto 26
 
 
 //LISTA DE INTSSSSSSSSSSS
@@ -92,4 +93,6 @@ void insereNaTabela(Lista_INT* listaid,int tipo);
 void imprime_Tabela();
 void imprime_comando(int opcao);
 void if_icmp(int tipo);
-void gera_fim_label(char label[]);
+void gera_fim_if();
+void gera_fim_while();
+void gera_init_while();
