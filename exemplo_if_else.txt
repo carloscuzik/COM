@@ -1,0 +1,16 @@
+{
+	int a;
+	int b;
+
+	a = 2;
+	b = a + 2;
+	a = a * 2;
+	if (a == b)
+	{
+		print("são iguais");
+	} 
+	else 
+	{
+		print("não são iguais");
+	}
+}

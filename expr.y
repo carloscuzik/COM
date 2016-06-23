@@ -55,12 +55,15 @@ Comando: CmdSe
 	;
 Retorno: TRET Expr TPVIR
 	;
-CmdSe: TIF TAPAR ExpressaoLogica TFPAR BLoco {gera_fim_if();}
-	| TIF TAPAR ExpressaoLogica TFPAR BLoco TELSE BLoco {gera_fim_if();}
+CmdSe: TIF TAPAR ExpressaoLogica TFPAR BLoco CloseIf
+	| TIF TAPAR ExpressaoLogica TFPAR BLoco CloseIf TELSE BLoco
+	;
+CloseIf: {gera_fim_if();}
 	;
 CmdEnquanto: TWHILE InitWhile TAPAR ExpressaoLogica TFPAR BLoco {gera_fim_while();gera_fim_if();}
 	;
-InitWhile: {gera_init_while();};
+InitWhile: {gera_init_while();}
+	;
 CmdAtrib: TID TIGUAL Expr TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TLITERAL TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TID TAPAR ListaId TFPAR TPVIR {geraStore(posTabSim($1.id));}
@@ -95,7 +98,7 @@ ExpressaoRelacional: Expr TMENIGUAL Expr {if_icmp(le);}
 	| Expr TMAIIGUAL Expr {if_icmp(ge);}
 	| Expr TMAI Expr {if_icmp(gt);}
 	| Expr TMEN Expr {if_icmp(lt);}
-	| Expr TIGUAL Expr {if_icmp(eq);}
+	| Expr TIG Expr {if_icmp(eq);}
 	| Expr TDIF Expr {if_icmp(ne);}
 	;
 ExpressaoLogica: TNOT ExpressaoRelacional {}
