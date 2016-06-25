@@ -6,7 +6,7 @@
 %}
 
 %token TADD TMUL TSUB TDIV TAPAR TFPAR TMENIGUAL TMAIIGUAL TMEN TMAI TDIF TIG TAND TNUM TIF TWHILE TELSE
-TPRINT TREAD TOR TNOT TACHAVES TIGUAL TFCHAVES TINT TSTRING TVOID TLITERAL TID TVIR TPVIR TRET TCONST
+TPRINT TREAD TOR TNOT TACHAVES TIGUAL TFCHAVES TINT TSTRING TVOID TLITERAL TID TVIR TPVIR TRET TCONST TMAISIG TDO
 %%
 
 Programa: ListaFuncoes BlocoPrincipal
@@ -47,6 +47,7 @@ ListaCmd: ListaCmd Comando
 	;
 Comando: CmdSe
 	| CmdEnquanto
+	| CmdDo
 	| CmdAtrib
 	| CmdEscrita
 	| CmdLeitura
@@ -62,7 +63,10 @@ CmdEnquanto: TWHILE K TAPAR ExpressaoLogica TFPAR K BLoco {corrigir($4.listav, $
 	;
 Y: {$$.listav = cria_lista(ultimo()); gerar_goto();}
 	;
+CmdDo: TDO K BLoco TWHILE TAPAR ExpressaoLogica TFPAR TPVIR {corrigir($6.listav, $2.label);corrigir($6.listaf,novolabel());}
+	;
 CmdAtrib: TID TIGUAL Expr TPVIR {geraStore(posTabSim($1.id));}
+	| TID TMAISIG Expr TPVIR {gerarLoad(posTabSim($1.id));geraAdd();geraStore(posTabSim($1.id));}
 	| TID TIGUAL TLITERAL TPVIR {gera_acost($3.texto);geraaStore(posTabSim($1.id));}//trocar aload por o sem 
 	| TID TIGUAL TID TAPAR ListaId TFPAR TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TID TAPAR TFPAR TPVIR {geraStore(posTabSim($1.id));}

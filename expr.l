@@ -32,7 +32,9 @@ id (\_|{letra})+({digito}|\_|{letra})*
 "!" 		{return TNOT;}
 "{" 		{return TACHAVES;}
 "}" 		{return TFCHAVES;}
+"+=" 		{return TMAISIG;}
 "int" 		{return TINT;}
+"do" 		{return TDO;}
 "String" 	{return TSTRING;}
 "void" 		{return TVOID;}
 {literal}	{strcpy(yylval.texto,yytext);return TLITERAL;}

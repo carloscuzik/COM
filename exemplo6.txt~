@@ -1,0 +1,8 @@
+{
+	int a;
+	a = 1;
+	do{
+		print(a);
+		a += 1;
+	} while(a!=11);
+}
