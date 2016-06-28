@@ -3,12 +3,8 @@
 Lista *tabela;
 int last_label = 0;//referece a label da tabela de labels e comando que no caso é uma lista
 int java_label = 1;//referesse a label do java
-//tabela c]de declarações
+//tabela de declarações
 TabSim tabela_simbolos[100];
-int pilha_label[100];
-int pilha_while[100];
-int indice_label = 0;
-int indice_while = 0;
 int ultima_pos_tab_sim = 0;
 
 void geraAdd(){
@@ -158,12 +154,7 @@ void geraldc(char literal[]){
 int novolabel(){
 	int new_label = java_label;
 	java_label++;
-	printf("criando novo label: %i\n",new_label);
-
-
-
-
-	//aqui abaixo pode dar errado causo sso ocurra apagar
+	//printf("criando novo label: %i\n",new_label);
 
 	Codigo aux;
 	aux.inst = fim_label;
@@ -181,13 +172,6 @@ int novolabel(){
 	strcpy(aux.p3,buffer);
 
 	tabela = insere_lista(tabela,aux);
-
-
-	//^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
-
 	return new_label;
 }
 
@@ -243,25 +227,6 @@ void if_icmp(int tipo){
 
 	tabela = insere_lista(tabela,aux);
 }
-/*
-void gera_fim_label(int new_label){
-	Codigo aux;
-	aux.inst = fim_label;
-	aux.p1= -1;
-	aux.p2= -1;
-	aux.label = last_label;
-	last_label++;
-
-	char buffer[5];
-	char buffer2[3];
-	sprintf(buffer2, "%i", new_label);
-	buffer[0] = 'L';
-	buffer[1] = '\0';
-	strcat(buffer,buffer2);
-	strcpy(aux.p3,buffer);
-
-	tabela = insere_lista(tabela,aux);
-}*/
 
 int label_java_atual(){
 	return java_label;
@@ -269,7 +234,7 @@ int label_java_atual(){
 
 void insereNaTabela(Lista_INT* listaid,int tipo){
 	if(listaid == NULL){
-		printf("nao deu certo\n");
+		printf("Erro\n");
 		return;
 	}
 	No_lista_INT *aux = listaid->topo;
@@ -286,7 +251,7 @@ void insereNaTabela(Lista_INT* listaid,int tipo){
 void inicializa_lista(Lista **lista){
 	(*lista) = (Lista*) malloc(sizeof(Lista));
 	if((*lista) == NULL){
-		printf("deu errado :(  ):\n");
+		printf("Erro\n");
 	}else{
 		(*lista)->topo = NULL;
 	}
@@ -316,7 +281,7 @@ Lista_INT *inicializa_lista_INT(char id[]){
 	Lista_INT *lista;
 	lista = (Lista_INT*) malloc(sizeof(Lista_INT));
 	if(lista == NULL){
-		printf("deu errado :(     ):\n");
+		printf("Erro\n");
 	}else{
 		lista->topo = NULL;
 	}
@@ -326,7 +291,7 @@ Lista_INT *inicializa_lista_INT(char id[]){
 
 void insere_lista_INT(Lista_INT *lista, char info[]){
 	if(lista == NULL){
-		printf("deu muita merda\n");
+		printf("Lista esta vazia\n");
 	}
 	No_lista_INT* aux;
 	if(lista->topo==NULL){
@@ -405,127 +370,172 @@ void corrigir(int *lista,int new_label){
 }
 
 void imprime_Tabela(){
+	FILE *out;
+	out = fopen("saida.j","w");
 	No_lista* aux;
 	if(tabela==NULL){
 		printf("ta vazio por algum motivo\n");
 	}else{
 		aux = tabela->topo;
-		system("clear");
+		//system("clear");
 		printf("---------------------------------------------------------\n");
-		printf(".class public Alo\n");
+		printf(".class public Main\n");
+		fprintf(out,".class public Main\n");
 		printf(".super java/lang/Object\n\n");
+		fprintf(out,".super java/lang/Object\n\n");
 		printf(".method public <init>()V\n");
+		fprintf(out,".method public <init>()V\n");
 		printf("  aload_0\n");
+		fprintf(out,"  aload_0\n");
 		printf("  invokenonvirtual java/lang/Object/<init>()V\n");
+		fprintf(out,"  invokenonvirtual java/lang/Object/<init>()V\n");
 		printf("  return\n");
+		fprintf(out,"  return\n");
 		printf(".end method\n\n");
+		fprintf(out,".end method\n\n");
 		printf(".method public static main([Ljava/lang/String;)V\n");
+		fprintf(out,".method public static main([Ljava/lang/String;)V\n");
 		printf("  .limit stack 4\n");
+		fprintf(out,"  .limit stack 4\n");
 		printf("  .limit locals 10\n\n");
+		fprintf(out,"  .limit locals 10\n\n");
 		while(aux!=NULL){
 			if(aux->info.p3[0]=='L' && aux->info.inst!=_goto && aux->info.inst<19 && aux->info.inst>24){
 				printf(" %s:\n",aux->info.p3);
+				fprintf(out," %s:\n",aux->info.p3);
 			}
 			//printf("%i:  ", aux->info.label);
-			imprime_comando(aux->info.inst);
+			imprime_comandos(aux->info.inst, out);
 			if(aux->info.inst<18){
 				if(aux->info.p1!=-1){
 					printf("%i\n",aux->info.p1);
+					fprintf(out,"%i\n",aux->info.p1);
 				}
 				if(aux->info.p2!=-1){
 					printf("%i\n",aux->info.p2);
+					fprintf(out,"%i\n",aux->info.p2);
 				}
 			}else{
 				printf("%s",aux->info.p3);
+				fprintf(out,"%s",aux->info.p3);
 				if(aux->info.inst==25){
 					printf(":");
+					fprintf(out,":");
 				}
 				printf("\n");
+				fprintf(out,"\n");
 			}
 			aux = aux->proximo;
 		}
 		printf("  return\n");
+		fprintf(out,"  return\n");
 		printf(".end method\n");
+		fprintf(out,".end method\n");
 		printf("---------------------------------------------------------\n");
 	}
 }
 
-void imprime_comando(int opcao){
+void imprime_comandos(int opcao, FILE *out){
 	switch(opcao){
 		case iadd:
 			printf("  iadd\n");
+			fprintf(out,"  iadd\n");
 			break;
 		case isub:
 			printf("  isub\n");
+			fprintf(out,"  isub\n");
 			break;
 		case idiv:
 			printf("  idiv\n");
+			fprintf(out,"  idiv\n");
 			break;
 		case imul:
 			printf("  imul\n");
+			fprintf(out,"  imul\n");
 			break;
 		case bipush:
 			printf("  bipush ");
+			fprintf(out,"  bipush ");
 			break;
 		case iconst_0:
 			printf("  iconst_0\n");
+			fprintf(out,"  iconst_0\n");
 			break;
 		case iconst_1:
 			printf("  iconst_1\n");
+			fprintf(out,"  iconst_1\n");
 			break;
 		case iconst_2:
 			printf("  iconst_2\n");
+			fprintf(out,"  iconst_2\n");
 			break;
 		case iconst_3:
 			printf("  iconst_3\n");
+			fprintf(out,"  iconst_3\n");
 			break;	
 		case iconst_4:
 			printf("  iconst_4\n");
+			fprintf(out,"  iconst_4\n");
 			break;
 		case iconst_5:
 			printf("  iconst_5\n");
+			fprintf(out,"  iconst_5\n");
 			break;
 		case iload:
 			printf("  iload_");
+			fprintf(out,"  iload_");
 			break;
 		case istore:
 			printf("  istore_");
+			fprintf(out,"  istore_");
 			break;
 		case getStatic:
 			printf("  getstatic java/lang/System/out Ljava/io/PrintStream;\n");
+			fprintf(out,"  getstatic java/lang/System/out Ljava/io/PrintStream;\n");
 			break;
 		case invokevirtual_int:
 			printf("  invokevirtual java/io/PrintStream/println(I)V\n");
+			fprintf(out,"  invokevirtual java/io/PrintStream/println(I)V\n");
 			break;
 		case invokevirtual_str:
 			printf("  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
+			fprintf(out,"  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
 			break;
 		case ldc:
 			printf("  ldc ");
+			fprintf(out,"  ldc ");
 			break;
 		case eq:
 			printf("  if_icmpeq ");
+			fprintf(out,"  if_icmpeq ");
 			break;
 		case ne:
 			printf("  if_icmpne ");
+			fprintf(out,"  if_icmpne ");
 			break;
 		case lt:
 			printf("  if_icmplt ");
+			fprintf(out,"  if_icmplt ");
 			break;
 		case le:
 			printf("  if_icmple ");
+			fprintf(out,"  if_icmple ");
 			break;
 		case gt:
 			printf("  if_icmpgt ");
+			fprintf(out,"  if_icmpgt ");
 			break;
 		case ge:
 			printf("  if_icmpge ");
+			fprintf(out,"  if_icmpge ");
 			break;
 		case fim_label:
 			printf(" ");
+			fprintf(out," ");
 			break;
 		case _goto:
 			printf("  goto ");
+			fprintf(out,"  goto ");
 			break;
 	}
 }

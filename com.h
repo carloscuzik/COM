@@ -89,30 +89,20 @@ int tipo_sim(char id_procurado[128]);
 void gera_ini_print();
 void geraInvoke(int tipo);
 void geraldc(char literal[]);
-
 void inicializa_lista(Lista **lista);
 Lista *insere_lista(Lista *lista, Codigo info);
-
 Lista_INT *inicializa_lista_INT(char info[]);
 void insere_lista_INT(Lista_INT *lista, char info[]);
-
 void insereNaTabela(Lista_INT* listaid,int tipo);
 void imprime_Tabela();
-void imprime_comando(int opcao);
+void imprime_comandos(int opcao,FILE *out);
 void if_icmp(int tipo);
-
-
 void gerar_goto();
 void gerar_goto_l(int new_label);
-
 int novolabel();
 int ultimo();
-
 int* cria_lista(int elemento);
 int* insere_lista_especial(int* lista, int info);
 int *merge(int* lista1,int* lista2);
 void corrigir(int *lista,int new_label);
-
-//void gera_fim_label(int new_label);
-
- int label_java_atual();
+int label_java_atual();
