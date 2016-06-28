@@ -118,9 +118,6 @@ void gera_ini_print(){
 }
 void geraInvoke(int tipo){
 	Codigo aux;
-	printf("chaegou aki com o tipo: %i\n",tipo);
-	printf("tipo int é %i:\n",INTE);
-	printf("tipo string é %i:\n",STRING);
 	if(tipo == INTE){
 		aux.inst = invokevirtual_int;
 	}else{
@@ -332,43 +329,43 @@ void imprime_Tabela(){
 void imprime_comando(int opcao){
 	switch(opcao){
 		case iadd:
-			printf("  .iadd\n");
+			printf("  iadd\n");
 			break;
 		case isub:
-			printf("  .isub\n");
+			printf("  isub\n");
 			break;
 		case idiv:
-			printf("  .idiv\n");
+			printf("  idiv\n");
 			break;
 		case imul:
-			printf("  .imul\n");
+			printf("  imul\n");
 			break;
 		case bipush:
-			printf("  .bipush ");
+			printf("  bipush ");
 			break;
 		case iconst_0:
-			printf("  .iconst_0\n");
+			printf("  iconst_0\n");
 			break;
 		case iconst_1:
-			printf("  .iconst_1\n");
+			printf("  iconst_1\n");
 			break;
 		case iconst_2:
-			printf("  .iconst_2\n");
+			printf("  iconst_2\n");
 			break;
 		case iconst_3:
-			printf("  .iconst_3\n");
+			printf("  iconst_3\n");
 			break;	
 		case iconst_4:
-			printf(".iconst_4\n");
+			printf("  iconst_4\n");
 			break;
 		case iconst_5:
-			printf("  .iconst_5\n");
+			printf("  iconst_5\n");
 			break;
 		case iload:
-			printf("  .iload ");
+			printf("  iload_");
 			break;
 		case istore:
-			printf("  .istore ");
+			printf("  istore_");
 			break;
 		case getStatic:
 			printf("  getstatic java/lang/System/out Ljava/io/PrintStream;\n");
@@ -383,22 +380,22 @@ void imprime_comando(int opcao){
 			printf("  ldc ");
 			break;
 		case eq:
-			printf("  .if_icmpne ");
+			printf("  if_icmpne ");
 			break;
 		case ne:
-			printf("  .if_icmpeq ");
+			printf("  if_icmpeq ");
 			break;
 		case lt:
-			printf("  .if_icmpge ");
+			printf("  if_icmpge ");
 			break;
 		case le:
-			printf("  .if_icmpgt ");
+			printf("  if_icmpgt ");
 			break;
 		case gt:
-			printf("  .if_icmple ");
+			printf("  if_icmple ");
 			break;
 		case ge:
-			printf("  .if_icmplt ");
+			printf("  if_icmplt ");
 			break;
 		case fim_label:
 			printf(" ");
