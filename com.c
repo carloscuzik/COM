@@ -158,6 +158,7 @@ void geraldc(char literal[]){
 int novolabel(){
 	int new_label = java_label;
 	java_label++;
+	printf("criando novo label: %i\n",new_label);
 	return new_label;
 }
 int ultimo(){
@@ -207,7 +208,7 @@ void if_icmp(int tipo){
 	strcat(buffer,buffer2);
 	strcpy(aux.p3,buffer);
 
-	java_label++;
+	//java_label++;
 
 	tabela = insere_lista(tabela,aux);
 }
