@@ -55,14 +55,12 @@ Comando: CmdSe
 	;
 Retorno: TRET Expr TPVIR
 	;
-CmdSe: TIF TAPAR ExpressaoLogica TFPAR BLoco CloseIf
-	| TIF TAPAR ExpressaoLogica TFPAR BLoco CloseIf TELSE BLoco
+CmdSe: TIF TAPAR ExpressaoLogica TFPAR K BLoco {corrigir($3.listav,$5.label); corrigir($3.listaf, novolabel());}
+	| TIF TAPAR ExpressaoLogica TFPAR K BLoco Y TELSE K BLoco {corrigir($3.listav, $5.label); corrigir($3.listaf, $9.label); corrigir($7.listav, novolabel());} 
 	;
-CloseIf: {gera_fim_if();}
+CmdEnquanto: TWHILE K TAPAR ExpressaoLogica TFPAR K BLoco {corrigir($4.listav, $6.label);gerar_goto_l($2.label);corrigir($4.listaf,novolabel());}
 	;
-CmdEnquanto: TWHILE InitWhile TAPAR ExpressaoLogica TFPAR BLoco {gera_fim_while();gera_fim_if();}
-	;
-InitWhile: {gera_init_while();}
+Y: {$$.listav = cria_lista(ultimo()); gerar_goto();}
 	;
 CmdAtrib: TID TIGUAL Expr TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TLITERAL TPVIR {geraStore(posTabSim($1.id));}
@@ -94,18 +92,24 @@ Fator: TNUM
 	| TID {$$.tipo = tipo_sim($1.id); gerarLoad(posTabSim($1.id));}
 	| TCONST {gerarConst($1.cconst);}
 	;
-ExpressaoRelacional: Expr TMENIGUAL Expr {if_icmp(le);}
-	| Expr TMAIIGUAL Expr {if_icmp(ge);}
-	| Expr TMAI Expr {if_icmp(gt);}
-	| Expr TMEN Expr {if_icmp(lt);}
-	| Expr TIG Expr {if_icmp(eq);}
-	| Expr TDIF Expr {if_icmp(ne);}
+ExpressaoRelacional: Expr TMENIGUAL Expr  {$$.listav = cria_lista(ultimo()); $$.listaf = cria_lista(ultimo()+1); if_icmp(le); gerar_goto();}
+	| Expr TMAIIGUAL Expr  {$$.listav = cria_lista(ultimo()); $$.listaf = cria_lista(ultimo()+1); if_icmp(ge); gerar_goto();}
+	| Expr TMAI Expr  {$$.listav = cria_lista(ultimo()); $$.listaf = cria_lista(ultimo()+1); if_icmp(gt); gerar_goto();}
+	| Expr TMEN Expr {$$.listav = cria_lista(ultimo()); $$.listaf = cria_lista(ultimo()+1); if_icmp(lt); gerar_goto();}
+	| Expr TIG Expr  {$$.listav = cria_lista(ultimo()); $$.listaf = cria_lista(ultimo()+1); if_icmp(eq); gerar_goto();}
+	| Expr TDIF Expr {$$.listav = cria_lista(ultimo()); $$.listaf = cria_lista(ultimo()+1); if_icmp(ne); gerar_goto();}
 	;
-ExpressaoLogica: TNOT ExpressaoRelacional {}
-	| ExpressaoRelacional TAND ExpressaoRelacional {}
-	| ExpressaoRelacional TOR ExpressaoRelacional {}
-	| ExpressaoRelacional
+ExpressaoLogica: ExpressaoLogica TAND K ExpressaoRelacional {corrigir($1.listav,$3.label); $$.listaf = merge($1.listaf, $4.listaf); $$.listav = $4.listav;}
+	| ExpressaoLogica TOR K ExpressaoRelacional             {corrigir($1.listaf,$3.label); $$.listav = merge($1.listav, $4.listav); $$.listaf = $4.listaf;}
+	| ExpressaoLogica2 {$$.listav = $1.listav; $$.listaf = $1.listaf;}
 	;
+ExpressaoLogica2: TNOT ExpressaoLogica2 {$$.listav = $2.listaf; $$.listaf = $2.listav;}
+	| TAPAR ExpressaoLogica TFPAR {$$.listav = $2.listav; $$.listaf = $2.listaf;}
+	| ExpressaoRelacional {$$.listav = $1.listav; $$.listaf = $1.listaf;}
+	;
+K: {$$.label = novolabel();};
+
+
 %%
 #include "lex.yy.c"
 

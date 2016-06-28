@@ -1,7 +1,8 @@
 #include "com.h"
 
 Lista *tabela;
-int last_label = 1;
+int last_label = 0;//referece a label da tabela de labels e comando que no caso é uma lista
+int java_label = 1;//referesse a label do java
 //tabela c]de declarações
 TabSim tabela_simbolos[100];
 int pilha_label[100];
@@ -15,7 +16,8 @@ void geraAdd(){
 	aux.inst = iadd;
 	aux.p1=-1;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 void geraSub(){
@@ -23,7 +25,8 @@ void geraSub(){
 	aux.inst = isub;
 	aux.p1=-1;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 void geraDiv(){
@@ -31,7 +34,8 @@ void geraDiv(){
 	aux.inst = idiv;
 	aux.p1=-1;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 void geraMul(){
@@ -39,7 +43,8 @@ void geraMul(){
 	aux.inst = imul;
 	aux.p1=-1;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 void gerarConst(int p1){
@@ -68,7 +73,8 @@ void gerarConst(int p1){
 		aux.p1=p1;
 	}
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 
@@ -97,7 +103,8 @@ void gerarLoad(int pos){
 	aux.inst = iload;
 	aux.p1=pos;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 void geraStore(int pos){
@@ -105,7 +112,8 @@ void geraStore(int pos){
 	aux.inst = istore;
 	aux.p1=pos;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 void gera_ini_print(){
@@ -113,7 +121,8 @@ void gera_ini_print(){
 	aux.inst = getStatic;
 	aux.p1=-1;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 void geraInvoke(int tipo){
@@ -125,7 +134,8 @@ void geraInvoke(int tipo){
 	}
 	aux.p1=-1;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
 void geraldc(char literal[]){
@@ -134,23 +144,60 @@ void geraldc(char literal[]){
 	aux.p1=-1;//na vdd deveria usar a variavel literal[]
 	aux.p2=-1;
 	strcpy(aux.p3,literal);
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 
 	aux.inst = invokevirtual_str;
 	aux.p1=-1;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	tabela = insere_lista(tabela,aux);
 }
-
+int novolabel(){
+	int new_label = java_label;
+	java_label++;
+	return new_label;
+}
+int ultimo(){
+	return last_label;
+}
+void gerar_goto(){
+	Codigo aux;
+	aux.inst = _goto;
+	aux.p1= -1;
+	aux.p2= -1;
+	aux.label = last_label;
+	last_label++;
+	tabela = insere_lista(tabela,aux);
+}
+void gerar_goto_l(int new_label){
+	Codigo aux;
+	aux.inst = _goto;
+	aux.p1= -1;
+	aux.p2= -1;
+	aux.label = last_label;
+	last_label++;
+	
+	char buffer[5];
+	char buffer2[3];
+	sprintf(buffer2, "%i", new_label);
+	buffer[0] = 'L';
+	buffer[1] = '\0';
+	strcat(buffer,buffer2);
+	strcpy(aux.p3,buffer);
+	
+	tabela = insere_lista(tabela,aux);
+}
 //Construção da parte de comparações
 void if_icmp(int tipo){
 	Codigo aux;
 	aux.inst = tipo;
 	aux.p1=-1;
 	aux.p2=-1;
-	aux.label = -1;
+	aux.label = last_label;
+	last_label++;
 	char label[5];
 	label[2] = '\0';
 	label[1] = last_label+48;
@@ -161,51 +208,28 @@ void if_icmp(int tipo){
 	strcpy(aux.p3,label);
 	tabela = insere_lista(tabela,aux);
 }
-void gera_fim_if(){
-	Codigo aux;
-	aux.inst = fim_label;
-	aux.p1=-1;
-	aux.p2=-1;
-	aux.label = -1;
-	char label[5];
-	label[2] = '\0';
-	indice_label--;
-	label[1] = pilha_label[indice_label]+48;
-	label[0] = 'L';
-	strcpy(aux.p3,label);
-	tabela = insere_lista(tabela,aux);
-}
 
-void gera_init_while(){
+void gera_fim_label(int new_label){
 	Codigo aux;
 	aux.inst = fim_label;
-	aux.p1=-1;
-	aux.p2=-1;
-	aux.label = -1;
-	char label[5];
-	label[2] = '\0';
-	label[1] = last_label+48;
-	label[0] = 'L';
-	pilha_while[indice_while] = last_label;
-	indice_while++;
+	aux.p1= -1;
+	aux.p2= -1;
+	aux.label = last_label;
 	last_label++;
-	strcpy(aux.p3,label);
+
+	char buffer[5];
+	char buffer2[3];
+	sprintf(buffer2, "%i", new_label);
+	buffer[0] = 'L';
+	buffer[1] = '\0';
+	strcat(buffer,buffer2);
+	strcpy(aux.p3,buffer);
+
 	tabela = insere_lista(tabela,aux);
 }
 
-void gera_fim_while(){
-	Codigo aux;
-	aux.inst = _goto;
-	aux.p1=-1;
-	aux.p2=-1;
-	aux.label = -1;
-	char label[5];
-	label[2] = '\0';
-	indice_while--;
-	label[1] = pilha_while[indice_while]+48;
-	label[0] = 'L';
-	strcpy(aux.p3,label);
-	tabela = insere_lista(tabela,aux);
+int label_java_atual(){
+	return java_label;
 }
 
 void insereNaTabela(Lista_INT* listaid,int tipo){
@@ -284,6 +308,67 @@ void insere_lista_INT(Lista_INT *lista, char info[]){
 	}
 }
 
+//Terceira listaaaaaaaaaa
+int* cria_lista(int elemento){
+	int* lista = (int*) malloc(sizeof(int)*20);
+	int i;
+	printf("inserindo o numero %i na lista quando cria\n",elemento);
+	lista[0] = elemento;
+	for(i=1;i<20;i++){
+		lista[i] = 0;
+	}
+	return lista;
+}
+
+int* insere_lista_especial(int* lista, int info){
+	int i;
+	printf("inserindo o numero %i na lista\n",info);
+	for(i=0;i<20;i++){
+		if(lista[i]==0){
+			lista[i] = info;
+			break;
+		}
+	}
+	return lista;
+}
+
+int *merge(int* lista1,int* lista2){
+	int i,j=0;
+	for(i=0;i<20;i++){
+		if(lista1[i]==0){
+			if(lista2[j]==0){
+				return lista1;
+			}else{
+				printf("merge de %i \n", lista2[j]);
+				lista1[i] = lista2[j];
+				j++;
+			}
+		}
+	}
+	return lista1;
+}
+void corrigir(int *lista,int new_label){
+
+	int i,j;
+	for(j=0;j<20;j++){
+		if(lista[j]==0){
+			break;
+		}
+		No_lista* aux_comandos = tabela->topo;
+		for(i=0;i<lista[j];i++){
+			aux_comandos = aux_comandos->proximo;
+		}
+		char buffer[5];
+		char buffer2[3];
+		sprintf(buffer2, "%i", new_label);
+		buffer[0] = 'L';
+		buffer[1] = '\0';
+		strcat(buffer,buffer2);
+		strcpy(aux_comandos->info.p3,buffer);
+		printf("coloca %s no %i\n",buffer, lista[i]);
+	}
+}
+
 void imprime_Tabela(){
 	No_lista* aux;
 	if(tabela==NULL){
@@ -301,8 +386,11 @@ void imprime_Tabela(){
 		printf(".end method\n\n");
 		printf(".method public static main([Ljava/lang/String;)V\n");
 		printf("  .limit stack 4\n");
-		printf("  .limit locals 6\n\n");
+		printf("  .limit locals 10\n\n");
 		while(aux!=NULL){
+			if(aux->info.p3[1]=='L'){
+				printf(" %s:\n",aux->info.p3);
+			}
 			imprime_comando(aux->info.inst);
 			if(aux->info.inst<18){
 				if(aux->info.p1!=-1){

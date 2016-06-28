@@ -5,5 +5,5 @@
 	a = 3;
 	b = 4;
 	c = a + b;
-	print M (c * 2);
+	print(c * 2);
 }
