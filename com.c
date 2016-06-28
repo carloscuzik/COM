@@ -504,22 +504,22 @@ void imprime_comando(int opcao){
 			printf("  ldc ");
 			break;
 		case eq:
-			printf("  if_icmpne ");
-			break;
-		case ne:
 			printf("  if_icmpeq ");
 			break;
+		case ne:
+			printf("  if_icmpne ");
+			break;
 		case lt:
-			printf("  if_icmpge ");
+			printf("  if_icmplt ");
 			break;
 		case le:
-			printf("  if_icmpgt ");
-			break;
-		case gt:
 			printf("  if_icmple ");
 			break;
+		case gt:
+			printf("  if_icmpgt ");
+			break;
 		case ge:
-			printf("  if_icmplt ");
+			printf("  if_icmpge ");
 			break;
 		case fim_label:
 			printf(" ");
