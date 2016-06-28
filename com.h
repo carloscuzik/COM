@@ -100,9 +100,7 @@ void insereNaTabela(Lista_INT* listaid,int tipo);
 void imprime_Tabela();
 void imprime_comando(int opcao);
 void if_icmp(int tipo);
-void gera_fim_if();
-void gera_fim_while();
-void gera_init_while();
+
 
 void gerar_goto();
 void gerar_goto_l(int new_label);
@@ -115,6 +113,6 @@ int* insere_lista_especial(int* lista, int info);
 int *merge(int* lista1,int* lista2);
 void corrigir(int *lista,int new_label);
 
-void gera_fim_label(int new_label);
+//void gera_fim_label(int new_label);
 
  int label_java_atual();

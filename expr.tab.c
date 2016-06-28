@@ -1553,7 +1553,7 @@ yyreduce:
 
   case 71:
 #line 110 "expr.y" /* yacc.c:1646  */
-    {(yyval).label = novolabel();}
+    {(yyval).label = novolabel();printf("passo pelo K\n");;}
 #line 1558 "expr.tab.c" /* yacc.c:1646  */
     break;
 

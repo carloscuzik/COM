@@ -198,17 +198,20 @@ void if_icmp(int tipo){
 	aux.p2=-1;
 	aux.label = last_label;
 	last_label++;
-	char label[5];
-	label[2] = '\0';
-	label[1] = last_label+48;
-	label[0] = 'L';
-	pilha_label[indice_label] = last_label;
-	indice_label++;
-	last_label++;
-	strcpy(aux.p3,label);
+
+	char buffer[5];
+	char buffer2[3];
+	sprintf(buffer2, "%i", java_label);
+	buffer[0] = 'L';
+	buffer[1] = '\0';
+	strcat(buffer,buffer2);
+	strcpy(aux.p3,buffer);
+
+	java_label++;
+
 	tabela = insere_lista(tabela,aux);
 }
-
+/*
 void gera_fim_label(int new_label){
 	Codigo aux;
 	aux.inst = fim_label;
@@ -226,7 +229,7 @@ void gera_fim_label(int new_label){
 	strcpy(aux.p3,buffer);
 
 	tabela = insere_lista(tabela,aux);
-}
+}*/
 
 int label_java_atual(){
 	return java_label;
@@ -365,7 +368,7 @@ void corrigir(int *lista,int new_label){
 		buffer[1] = '\0';
 		strcat(buffer,buffer2);
 		strcpy(aux_comandos->info.p3,buffer);
-		printf("coloca %s no %i\n",buffer, lista[i]);
+		printf("coloca %s no %i\n",buffer, lista[j]);
 	}
 }
 
@@ -388,9 +391,10 @@ void imprime_Tabela(){
 		printf("  .limit stack 4\n");
 		printf("  .limit locals 10\n\n");
 		while(aux!=NULL){
-			if(aux->info.p3[1]=='L'){
+			if(aux->info.p3[0]=='L' && aux->info.inst!=_goto && aux->info.inst<19 && aux->info.inst>24){
 				printf(" %s:\n",aux->info.p3);
 			}
+			//printf("%i:  ", aux->info.label);
 			imprime_comando(aux->info.inst);
 			if(aux->info.inst<18){
 				if(aux->info.p1!=-1){

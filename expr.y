@@ -107,7 +107,7 @@ ExpressaoLogica2: TNOT ExpressaoLogica2 {$$.listav = $2.listaf; $$.listaf = $2.l
 	| TAPAR ExpressaoLogica TFPAR {$$.listav = $2.listav; $$.listaf = $2.listaf;}
 	| ExpressaoRelacional {$$.listav = $1.listav; $$.listaf = $1.listaf;}
 	;
-K: {$$.label = novolabel();};
+K: {$$.label = novolabel();printf("passo pelo K\n");;};
 
 
 %%
