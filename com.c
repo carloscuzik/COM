@@ -159,11 +159,42 @@ int novolabel(){
 	int new_label = java_label;
 	java_label++;
 	printf("criando novo label: %i\n",new_label);
+
+
+
+
+	//aqui abaixo pode dar errado causo sso ocurra apagar
+
+	Codigo aux;
+	aux.inst = fim_label;
+	aux.p1= -1;
+	aux.p2= -1;
+	aux.label = last_label;
+	last_label++;
+
+	char buffer[5];
+	char buffer2[3];
+	sprintf(buffer2, "%i", new_label);
+	buffer[0] = 'L';
+	buffer[1] = '\0';
+	strcat(buffer,buffer2);
+	strcpy(aux.p3,buffer);
+
+	tabela = insere_lista(tabela,aux);
+
+
+	//^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+
 	return new_label;
 }
+
 int ultimo(){
 	return last_label;
 }
+
 void gerar_goto(){
 	Codigo aux;
 	aux.inst = _goto;
@@ -316,7 +347,7 @@ void insere_lista_INT(Lista_INT *lista, char info[]){
 int* cria_lista(int elemento){
 	int* lista = (int*) malloc(sizeof(int)*20);
 	int i;
-	printf("inserindo o numero %i na lista quando cria\n",elemento);
+	//printf("inserindo o numero %i na lista quando cria\n",elemento);
 	lista[0] = elemento;
 	for(i=1;i<20;i++){
 		lista[i] = 0;
@@ -326,7 +357,7 @@ int* cria_lista(int elemento){
 
 int* insere_lista_especial(int* lista, int info){
 	int i;
-	printf("inserindo o numero %i na lista\n",info);
+	//printf("inserindo o numero %i na lista\n",info);
 	for(i=0;i<20;i++){
 		if(lista[i]==0){
 			lista[i] = info;
@@ -343,7 +374,7 @@ int *merge(int* lista1,int* lista2){
 			if(lista2[j]==0){
 				return lista1;
 			}else{
-				printf("merge de %i \n", lista2[j]);
+				//printf("merge de %i \n", lista2[j]);
 				lista1[i] = lista2[j];
 				j++;
 			}
@@ -369,7 +400,7 @@ void corrigir(int *lista,int new_label){
 		buffer[1] = '\0';
 		strcat(buffer,buffer2);
 		strcpy(aux_comandos->info.p3,buffer);
-		printf("coloca %s no %i\n",buffer, lista[j]);
+		//printf("coloca %s no %i\n",buffer, lista[j]);
 	}
 }
 
