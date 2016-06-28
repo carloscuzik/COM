@@ -69,7 +69,7 @@ CmdAtrib: TID TIGUAL Expr TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TID TAPAR ListaId TFPAR TPVIR {geraStore(posTabSim($1.id));}
 	| TID TIGUAL TID TAPAR TFPAR TPVIR {geraStore(posTabSim($1.id));}
 	;
-CmdEscrita: TPRINT M TAPAR Expr TFPAR TPVIR{geraInvoke();}
+CmdEscrita: TPRINT M TAPAR Expr TFPAR TPVIR{geraInvoke($4.tipo);}
 	| TPRINT M TAPAR TLITERAL TFPAR TPVIR {geraldc($4.texto);}
 	;
 M: {gera_ini_print();};
@@ -83,15 +83,15 @@ ListaParametros: ListaParametros TVIR Expr
 	;
 Expr: Expr TADD Termo {geraAdd();} 
 	| Expr TSUB Termo {geraSub();} 
-	| Termo
+	| Termo {$$.tipo = $1.tipo;}
 	;
 Termo: Termo TMUL Fator {geraMul();} 
 	| Termo TDIV Fator {geraDiv();} 
-	| Fator
+	| Fator {$$.tipo = $1.tipo;}
 	;
 Fator: TNUM 
 	| TAPAR Expr TFPAR 
-	| TID {gerarLoad(posTabSim($1.id));}
+	| TID {$$.tipo = tipo_sim($1.id); gerarLoad(posTabSim($1.id));}
 	| TCONST {gerarConst($1.cconst);}
 	;
 ExpressaoRelacional: Expr TMENIGUAL Expr {if_icmp(le);}

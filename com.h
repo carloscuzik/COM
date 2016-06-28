@@ -21,7 +21,7 @@
 #define ldc 18
 
 #define STRING 1
-#define INT 0
+#define INTE 0
 
 #define eq 19
 #define ne 20
@@ -82,8 +82,9 @@ void gerarLoad(int pos);
 void geraStore(int pos);
 void gerarConst(int p1);
 int posTabSim(char id_procurado[128]);
+int tipo_sim(char id_procurado[128]);
 void gera_ini_print();
-void geraInvoke();
+void geraInvoke(int tipo);
 void geraldc(char literal[]);
 void inicializa_lista(Lista **lista);
 Lista *insere_lista(Lista *lista, Codigo info);

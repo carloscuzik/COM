@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.4.  */
+/* A Bison parser, made by GNU Bison 3.0.2.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.4"
+#define YYBISON_VERSION "3.0.2"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -1399,7 +1399,7 @@ yyreduce:
 
   case 42:
 #line 72 "expr.y" /* yacc.c:1646  */
-    {geraInvoke();}
+    {geraInvoke((yyvsp[-2]).tipo);}
 #line 1404 "expr.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1427,86 +1427,98 @@ yyreduce:
 #line 1428 "expr.tab.c" /* yacc.c:1646  */
     break;
 
+  case 52:
+#line 86 "expr.y" /* yacc.c:1646  */
+    {(yyval).tipo = (yyvsp[0]).tipo;}
+#line 1434 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
   case 53:
 #line 88 "expr.y" /* yacc.c:1646  */
     {geraMul();}
-#line 1434 "expr.tab.c" /* yacc.c:1646  */
+#line 1440 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
 #line 89 "expr.y" /* yacc.c:1646  */
     {geraDiv();}
-#line 1440 "expr.tab.c" /* yacc.c:1646  */
+#line 1446 "expr.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 55:
+#line 90 "expr.y" /* yacc.c:1646  */
+    {(yyval).tipo = (yyvsp[0]).tipo;}
+#line 1452 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
 #line 94 "expr.y" /* yacc.c:1646  */
-    {gerarLoad(posTabSim((yyvsp[0]).id));}
-#line 1446 "expr.tab.c" /* yacc.c:1646  */
+    {(yyval).tipo = tipo_sim((yyvsp[0]).id); gerarLoad(posTabSim((yyvsp[0]).id));}
+#line 1458 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
 #line 95 "expr.y" /* yacc.c:1646  */
     {gerarConst((yyvsp[0]).cconst);}
-#line 1452 "expr.tab.c" /* yacc.c:1646  */
+#line 1464 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
 #line 97 "expr.y" /* yacc.c:1646  */
     {if_icmp(le);}
-#line 1458 "expr.tab.c" /* yacc.c:1646  */
+#line 1470 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
 #line 98 "expr.y" /* yacc.c:1646  */
     {if_icmp(ge);}
-#line 1464 "expr.tab.c" /* yacc.c:1646  */
+#line 1476 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
 #line 99 "expr.y" /* yacc.c:1646  */
     {if_icmp(gt);}
-#line 1470 "expr.tab.c" /* yacc.c:1646  */
+#line 1482 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
 #line 100 "expr.y" /* yacc.c:1646  */
     {if_icmp(lt);}
-#line 1476 "expr.tab.c" /* yacc.c:1646  */
+#line 1488 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
 #line 101 "expr.y" /* yacc.c:1646  */
     {if_icmp(eq);}
-#line 1482 "expr.tab.c" /* yacc.c:1646  */
+#line 1494 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
 #line 102 "expr.y" /* yacc.c:1646  */
     {if_icmp(ne);}
-#line 1488 "expr.tab.c" /* yacc.c:1646  */
+#line 1500 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
 #line 104 "expr.y" /* yacc.c:1646  */
     {}
-#line 1494 "expr.tab.c" /* yacc.c:1646  */
+#line 1506 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
 #line 105 "expr.y" /* yacc.c:1646  */
     {}
-#line 1500 "expr.tab.c" /* yacc.c:1646  */
+#line 1512 "expr.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
 #line 106 "expr.y" /* yacc.c:1646  */
     {}
-#line 1506 "expr.tab.c" /* yacc.c:1646  */
+#line 1518 "expr.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1510 "expr.tab.c" /* yacc.c:1646  */
+#line 1522 "expr.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

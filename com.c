@@ -82,6 +82,16 @@ int posTabSim(char id_procurado[128]){
 	printf("id não encontrado %s\n",id_procurado);
 	return -1;
 }
+int tipo_sim(char id_procurado[128]){
+	int i;
+	for(i=0;i<ultima_pos_tab_sim;i++){
+		if(strcmp(tabela_simbolos[i].id,id_procurado)==0){
+			return tabela_simbolos[i].tipo;
+		}
+	}
+	printf("id não encontrado %s\n",id_procurado);
+	return -1;
+}
 void gerarLoad(int pos){
 	Codigo aux;
 	aux.inst = iload;
@@ -106,9 +116,16 @@ void gera_ini_print(){
 	aux.label = -1;
 	tabela = insere_lista(tabela,aux);
 }
-void geraInvoke(){
+void geraInvoke(int tipo){
 	Codigo aux;
-	aux.inst = invokevirtual_int;
+	printf("chaegou aki com o tipo: %i\n",tipo);
+	printf("tipo int é %i:\n",INTE);
+	printf("tipo string é %i:\n",STRING);
+	if(tipo == INTE){
+		aux.inst = invokevirtual_int;
+	}else{
+		aux.inst = invokevirtual_str;
+	}
 	aux.p1=-1;
 	aux.p2=-1;
 	aux.label = -1;
