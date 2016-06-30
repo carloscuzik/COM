@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.4.  */
+/* A Bison parser, made by GNU Bison 3.0.2.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.4"
+#define YYBISON_VERSION "3.0.2"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -1397,7 +1397,7 @@ yyreduce:
 
   case 38:
 #line 66 "expr.y" /* yacc.c:1646  */
-    {geraStore(posTabSim((yyvsp[-3]).id));}
+    {gera_acost((yyvsp[-1]).texto);geraaStore(posTabSim((yyvsp[-3]).id));}
 #line 1402 "expr.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1469,7 +1469,7 @@ yyreduce:
 
   case 57:
 #line 92 "expr.y" /* yacc.c:1646  */
-    {(yyval).tipo = tipo_sim((yyvsp[0]).id); gerarLoad(posTabSim((yyvsp[0]).id));}
+    {(yyval).tipo = tipo_sim((yyvsp[0]).id); if((yyval).tipo==0){gerarLoad(posTabSim((yyvsp[0]).id));}else{geraraLoad(posTabSim((yyvsp[0]).id));}}
 #line 1474 "expr.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1553,7 +1553,7 @@ yyreduce:
 
   case 71:
 #line 110 "expr.y" /* yacc.c:1646  */
-    {(yyval).label = novolabel();printf("passo pelo K\n");;}
+    {(yyval).label = novolabel();}
 #line 1558 "expr.tab.c" /* yacc.c:1646  */
     break;
 
