@@ -1,7 +1,0 @@
-{
-	String nome;
-	print("Qual o seu nome?");
-	nome = "carlos";
-	print("Ola ");
-	print(nome);
-}
