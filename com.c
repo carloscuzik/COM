@@ -292,6 +292,7 @@ Lista * insere_lista(Lista *lista, Codigo info){
 	if(lista == NULL){
 		inicializa_lista(&lista);
 	}
+	printf("codigo: %i\n",info.label);
 	No_lista* aux;
 	if(lista->topo==NULL){
 		lista->topo = (No_lista*) malloc(sizeof(No_lista));
@@ -307,6 +308,7 @@ Lista * insere_lista(Lista *lista, Codigo info){
 	}
 	return lista;
 }
+
 //OTRAAAAAAA    LISTAAAAAAAAAAAAA
 Lista_INT *inicializa_lista_INT(char id[]){
 	Lista_INT *lista;
@@ -363,6 +365,50 @@ int* insere_lista_especial(int* lista, int info){
 	return lista;
 }
 
+int* cria_lista_parametros(int elemento){
+	int* lista = (int*) malloc(sizeof(int)*20);
+	int i;
+	lista[0] = elemento;
+	for(i=1;i<20;i++){
+		lista[i] = 0;
+	}
+	return lista;
+}
+
+int* insere_lista_parametros(int*lista, int elemento){
+	int i;
+	for(i=0;i<20;i++){
+		if(lista[i]==0){
+			lista[i] = elemento;
+			break;
+		}
+	}
+	return lista;
+}
+
+void insere_na_tabela_de_simbolos(int tipo,char id[128]){
+	tabela_simbolos[ultima_pos_tab_sim].tipo = tipo;
+	strcpy(tabela_simbolos[ultima_pos_tab_sim].id,id);
+	ultima_pos_tab_sim++;
+}
+
+void zera_parametros(){
+	ultima_pos_tab_sim = 0;
+	tabela = NULL;
+	last_label = 0;
+}
+
+int retorna_indice(){
+	return ultima_pos_tab_sim;
+}
+
+void teste(int indice,TabSim* tab_sim){
+	int i;
+	for(i=0;i<indice;i++){
+		printf("%s - pos: %i\n",tab_sim[i].id,tab_sim[i].tipo);
+	}
+}
+
 int *merge(int* lista1,int* lista2){
 	int i,j=0;
 	for(i=0;i<20;i++){
@@ -400,36 +446,70 @@ void corrigir(int *lista,int new_label){
 	}
 }
 
-void imprime_Tabela(){
+void gera_cabecalho(){
 	FILE *out;
 	out = fopen("saida.j","w");
+	system("clear");
+	printf(".class public Main\n");
+	fprintf(out,".class public Main\n");
+	printf(".super java/lang/Object\n\n");
+	fprintf(out,".super java/lang/Object\n\n");
+	printf(".method public <init>()V\n");
+	fprintf(out,".method public <init>()V\n");
+	printf("  aload_0\n");
+	fprintf(out,"  aload_0\n");
+	printf("  invokenonvirtual java/lang/Object/<init>()V\n");
+	fprintf(out,"  invokenonvirtual java/lang/Object/<init>()V\n");
+	printf("  return\n");
+	fprintf(out,"  return\n");
+	printf(".end method\n\n");
+	fprintf(out,".end method\n\n");
+	fclose(out);
+}
+
+void gera_main(){
+	FILE *out;
+	out = fopen("saida.j","a");
+	printf(".method public static main([Ljava/lang/String;)V\n");
+	fprintf(out,".method public static main([Ljava/lang/String;)V\n");
+	printf("  .limit stack 4\n");
+	fprintf(out,"  .limit stack 4\n");
+	printf("  .limit locals 10\n\n");
+	fprintf(out,"  .limit locals 10\n\n");
+	fclose(out);
+}
+
+void fecha_funcao(){
+	FILE *out;
+	out = fopen("saida.j","a");
+	printf("  return\n");
+	fprintf(out,"  return\n");
+	printf(".end method\n\n");
+	fprintf(out,".end method\n\n");
+	fclose(out);
+}
+
+void gera_cabecalho_func(int tipo,char id[128]){
+	FILE *out;
+	out = fopen("saida.j","a");
+	printf(".method public static %s([Ljava/lang/String;)V\n",id);
+	fprintf(out,".method public static %s([Ljava/lang/String;)V\n",id);
+	printf("  .limit stack 4\n");
+	fprintf(out,"  .limit stack 4\n");
+	printf("  .limit locals 10\n\n");
+	fprintf(out,"  .limit locals 10\n\n");
+	fclose(out);
+}
+
+void imprime_Tabela(){
+	FILE *out;
+	out = fopen("saida.j","a");
 	No_lista* aux;
 	if(tabela==NULL){
 		printf("ta vazio por algum motivo\n");
 	}else{
 		aux = tabela->topo;
-		//system("clear");
-		printf("---------------------------------------------------------\n");
-		printf(".class public Main\n");
-		fprintf(out,".class public Main\n");
-		printf(".super java/lang/Object\n\n");
-		fprintf(out,".super java/lang/Object\n\n");
-		printf(".method public <init>()V\n");
-		fprintf(out,".method public <init>()V\n");
-		printf("  aload_0\n");
-		fprintf(out,"  aload_0\n");
-		printf("  invokenonvirtual java/lang/Object/<init>()V\n");
-		fprintf(out,"  invokenonvirtual java/lang/Object/<init>()V\n");
-		printf("  return\n");
-		fprintf(out,"  return\n");
-		printf(".end method\n\n");
-		fprintf(out,".end method\n\n");
-		printf(".method public static main([Ljava/lang/String;)V\n");
-		fprintf(out,".method public static main([Ljava/lang/String;)V\n");
-		printf("  .limit stack 4\n");
-		fprintf(out,"  .limit stack 4\n");
-		printf("  .limit locals 10\n\n");
-		fprintf(out,"  .limit locals 10\n\n");
+		
 		while(aux!=NULL){
 			
 			if(aux->info.p3[0]=='L' && aux->info.inst!=_goto && aux->info.inst<19 && aux->info.inst>24){
@@ -466,11 +546,12 @@ void imprime_Tabela(){
 			}
 			aux = aux->proximo;
 		}
-		printf("  return\n");
-		fprintf(out,"  return\n");
-		printf(".end method\n");
-		fprintf(out,".end method\n");
-		printf("---------------------------------------------------------\n");
+		fclose(out);
+		//printf("  return\n");
+		//fprintf(out,"  return\n");
+		//printf(".end method\n");
+		//fprintf(out,".end method\n");
+		//printf("---------------------------------------------------------\n");
 	}
 }
 

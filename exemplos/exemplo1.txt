@@ -1,3 +1,10 @@
+void maior(int d, int c){
+	if(c < d){
+		print("oi");
+	}else{
+		print("oi");
+	}
+}
 {
 	int a;
 	int b;
@@ -17,6 +24,7 @@
 			b = b - a;
 		}
 	}
+	maior(2,2);
 	print("\nRes=");
 	print(a);
 }
