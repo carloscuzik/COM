@@ -7,7 +7,7 @@
   return
 .end method
 
-.method public static maior(I,I;)Ljava/lang/String
+.method public static maior(II)I
   .limit stack 4
   .limit locals 10
 
@@ -25,10 +25,11 @@
   ldc "oi"
   invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
  L3:
-  return
+  iconst_0
+  ireturn
 .end method
 
-.method public static main(Ljava/lang/String;)V
+.method public static main([Ljava/lang/String;)V
   .limit stack 4
   .limit locals 10
 
@@ -71,8 +72,8 @@
   goto L4
  L10:
   iconst_2
-  iconst_2
-invokevirtual maior(I,I;)Ljava/lang/String
+  iconst_3
+invokestatic Main/maior(II)I
   getstatic java/lang/System/out Ljava/io/PrintStream;
   ldc "\nRes="
   invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
