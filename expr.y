@@ -12,11 +12,11 @@ TPRINT TREAD TOR TNOT TACHAVES TIGUAL TFCHAVES TINT TSTRING TVOID TLITERAL TID T
 Programa: {gera_cabecalho();} ListaFuncoes {gera_main();} BlocoPrincipal {fecha_funcao();}
 	| {gera_cabecalho();} {gera_main();} BlocoPrincipal {fecha_funcao();}
 	;
-ListaFuncoes: ListaFuncoes Funcao {}
-	| Funcao {}
+ListaFuncoes: ListaFuncoes Funcao {insere_na_lista_de_funcoes($2.id,$2.tipo,$2.lista_de_par);}
+	| Funcao {insere_na_lista_de_funcoes($1.id,$1.tipo,$1.lista_de_par);}
 	;
-Funcao: TipoRetorno TID TAPAR DeclParametros TFPAR {gera_cabecalho_func($1.tipo,$2.id);} BlocoPrincipal {zera_parametros(); fecha_funcao(); $$.lista_de_par = $1.lista_de_par;}
-	| TipoRetorno TID TAPAR TFPAR BlocoPrincipal {}
+Funcao: TipoRetorno TID TAPAR DeclParametros TFPAR {gera_cabecalho_func($1.tipo,$2.id,$4.lista_de_par);} BlocoPrincipal {zera_parametros(); fecha_funcao(); $$.lista_de_par = $4.lista_de_par; strcpy($$.id,$2.id);}
+	| TipoRetorno TID TAPAR TFPAR {gera_cabecalho_func($1.tipo,$2.id,NULL);} BlocoPrincipal {zera_parametros(); fecha_funcao();}
 	;
 TipoRetorno: Tipo {$$.tipo = $1.tipo;}
 	| TVOID {$$.tipo = 2;}
@@ -77,11 +77,11 @@ CmdEscrita: TPRINT M TAPAR Expr TFPAR TPVIR{geraInvoke($4.tipo);}
 M: {gera_ini_print();};
 CmdLeitura: TREAD TAPAR TID TFPAR TPVIR
 	;
-ChamadaFuncao: TID TAPAR ListaParametros TFPAR TPVIR {printf("Chama a funcao\n");}
-	| TID TAPAR TFPAR TPVIR
+ChamadaFuncao: TID TAPAR ListaParametros TFPAR TPVIR {chama_funcao($1.id,$3.lista_de_par);}
+	| TID TAPAR TFPAR TPVIR {chama_funcao($1.id,NULL);}
 	;
-ListaParametros: ListaParametros TVIR Expr
-	| Expr
+ListaParametros: ListaParametros TVIR Expr {$$.lista_de_par = insere_lista_parametros($1.lista_de_par,$3.tipo);}
+	| Expr {$$.lista_de_par = cria_lista_parametros($1.tipo);}
 	;
 Expr: Expr TADD Termo {geraAdd();} 
 	| Expr TSUB Termo {geraSub();} 

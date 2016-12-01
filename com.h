@@ -62,6 +62,14 @@ typedef struct $sss{
  	int pos;
  }TabSim;
 
+ typedef struct lista_funcao{
+ 	char id[128];
+ 	int tipo_retorno;
+ 	int* parametros;
+ 	int ini;
+ 	int fim;
+ }Lista_funcao;
+
  typedef struct no_lista_parametros{
 	struct no_lista_int* proximo;
 	char info[128];
@@ -101,6 +109,7 @@ void geraSub();
 void geraDiv();
 void geraMul();
 void gerarLoad(int pos);
+void geraraLoad(int pos);
 void geraStore(int pos);
 void gerarConst(int p1);
 int posTabSim(char id_procurado[128]);
@@ -137,8 +146,12 @@ void insere_na_tabela_de_simbolos(int tipo,char id[128]);
 void zera_parametros();
 int retorna_indice();
 TabSim* retorna_tab_sim(int indice);
-void teste(int indice,TabSim* tab_sim);
 
 void gera_cabecalho();
+void gera_cabecalho_func(int tipo,char id[128],int* lista);
 void gera_main();
 void fecha_funcao();
+
+void insere_na_lista_de_funcoes(char id[128],int tipo_retorno,int* parametros);
+void chama_funcao(char id[128],int* parametros);
+int* busca_parametros(char id[128]);

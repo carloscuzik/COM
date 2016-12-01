@@ -1,4 +1,4 @@
-void maior(int d, int c){
+String maior(int d, int c){
 	if(c < d){
 		print("oi");
 	}else{

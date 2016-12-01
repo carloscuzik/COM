@@ -7,11 +7,11 @@
   return
 .end method
 
-.method public static maior([Ljava/lang/String;)V
+.method public static maior(I,I;)Ljava/lang/String
   .limit stack 4
   .limit locals 10
 
-  iload_0
+  iload_1
   iload_0
   if_icmplt L1
   goto L2
@@ -28,7 +28,7 @@
   return
 .end method
 
-.method public static main([Ljava/lang/String;)V
+.method public static main(Ljava/lang/String;)V
   .limit stack 4
   .limit locals 10
 
@@ -72,6 +72,7 @@
  L10:
   iconst_2
   iconst_2
+invokevirtual maior
   getstatic java/lang/System/out Ljava/io/PrintStream;
   ldc "\nRes="
   invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V

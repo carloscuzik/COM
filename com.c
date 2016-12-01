@@ -7,6 +7,9 @@ int java_label = 1;//referesse a label do java
 TabSim tabela_simbolos[100];
 int ultima_pos_tab_sim = 0;
 
+Lista_funcao lista_de_funcoes[100];
+int ultima_posicao_da_lista_de_funcoes = 0;
+
 void geraAdd(){
 	Codigo aux;
 	aux.inst = iadd;
@@ -88,7 +91,9 @@ void gera_acost(char literal[]){
 int posTabSim(char id_procurado[128]){
 	int i;
 	for(i=0;i<ultima_pos_tab_sim;i++){
+		//printf("%s - %s -- %i\n",tabela_simbolos[i].id,id_procurado,strcmp(tabela_simbolos[i].id,id_procurado));
 		if(strcmp(tabela_simbolos[i].id,id_procurado)==0){
+			//printf("%i\n",tabela_simbolos[i].pos);
 			return tabela_simbolos[i].pos;
 		}
 	}
@@ -292,7 +297,7 @@ Lista * insere_lista(Lista *lista, Codigo info){
 	if(lista == NULL){
 		inicializa_lista(&lista);
 	}
-	printf("codigo: %i\n",info.label);
+	//printf("codigo: %i\n",info.label);
 	No_lista* aux;
 	if(lista->topo==NULL){
 		lista->topo = (No_lista*) malloc(sizeof(No_lista));
@@ -370,7 +375,7 @@ int* cria_lista_parametros(int elemento){
 	int i;
 	lista[0] = elemento;
 	for(i=1;i<20;i++){
-		lista[i] = 0;
+		lista[i] = -1;
 	}
 	return lista;
 }
@@ -378,7 +383,7 @@ int* cria_lista_parametros(int elemento){
 int* insere_lista_parametros(int*lista, int elemento){
 	int i;
 	for(i=0;i<20;i++){
-		if(lista[i]==0){
+		if(lista[i]==-1){
 			lista[i] = elemento;
 			break;
 		}
@@ -388,6 +393,7 @@ int* insere_lista_parametros(int*lista, int elemento){
 
 void insere_na_tabela_de_simbolos(int tipo,char id[128]){
 	tabela_simbolos[ultima_pos_tab_sim].tipo = tipo;
+	tabela_simbolos[ultima_pos_tab_sim].pos = ultima_pos_tab_sim;
 	strcpy(tabela_simbolos[ultima_pos_tab_sim].id,id);
 	ultima_pos_tab_sim++;
 }
@@ -402,11 +408,47 @@ int retorna_indice(){
 	return ultima_pos_tab_sim;
 }
 
-void teste(int indice,TabSim* tab_sim){
+void insere_na_lista_de_funcoes(char id[128],int tipo_retorno,int* parametros){
+	printf("Grava a String %s\n",id);
+	strcpy(lista_de_funcoes[ultima_posicao_da_lista_de_funcoes].id,id);
+	lista_de_funcoes[ultima_posicao_da_lista_de_funcoes].tipo_retorno = tipo_retorno;
+	lista_de_funcoes[ultima_posicao_da_lista_de_funcoes].parametros = parametros;
+	ultima_posicao_da_lista_de_funcoes++;
+}
+
+void chama_funcao(char id[128],int* parametros){
+	int* parametros_reais = busca_parametros(id);
 	int i;
-	for(i=0;i<indice;i++){
-		printf("%s - pos: %i\n",tab_sim[i].id,tab_sim[i].tipo);
+	if(parametros_reais == NULL){
+		printf("Função não existe\n");
+		exit(1);
 	}
+	for(i=0;i<20;i++){
+		if(parametros_reais[i] != parametros[i]){
+			printf("Parametros não validos\n");
+			exit(1);
+		}
+	}
+	Codigo aux;
+	aux.inst = func;
+	aux.label = last_label;
+	char buffer[200];
+	strcat(buffer,"invokevirtual ");
+	strcat(buffer,id);
+	strcpy(aux.p3,buffer);
+	last_label++;
+	tabela = insere_lista(tabela,aux);
+}
+
+int* busca_parametros(char id[128]){
+	int i;
+	for(i=0;i<ultima_posicao_da_lista_de_funcoes;i++){
+		///printf("%s - %s\n",lista_de_funcoes[i].id,id);
+		if(strcmp(lista_de_funcoes[i].id,id)==0){
+			return lista_de_funcoes[i].parametros;
+		}
+	}
+	return NULL;
 }
 
 int *merge(int* lista1,int* lista2){
@@ -470,8 +512,8 @@ void gera_cabecalho(){
 void gera_main(){
 	FILE *out;
 	out = fopen("saida.j","a");
-	printf(".method public static main([Ljava/lang/String;)V\n");
-	fprintf(out,".method public static main([Ljava/lang/String;)V\n");
+	printf(".method public static main(Ljava/lang/String;)V\n");
+	fprintf(out,".method public static main(Ljava/lang/String;)V\n");
 	printf("  .limit stack 4\n");
 	fprintf(out,"  .limit stack 4\n");
 	printf("  .limit locals 10\n\n");
@@ -489,11 +531,52 @@ void fecha_funcao(){
 	fclose(out);
 }
 
-void gera_cabecalho_func(int tipo,char id[128]){
+void gera_cabecalho_func(int tipo,char id[128],int* lista){
 	FILE *out;
 	out = fopen("saida.j","a");
-	printf(".method public static %s([Ljava/lang/String;)V\n",id);
-	fprintf(out,".method public static %s([Ljava/lang/String;)V\n",id);
+	printf(".method public static %s(",id);
+	fprintf(out,".method public static %s(",id);
+	if(lista!=NULL){
+		int i;
+		for(i=0;i<20;i++){
+			if(lista[i] == -1){
+				break;
+			}else{
+				if(lista[i]==1){
+					if(i==0){
+						printf("Ljava/lang/String");
+						fprintf(out,"Ljava/lang/String");
+					}else{
+						printf(",Ljava/lang/String");
+						fprintf(out,",Ljava/lang/String");
+					}
+				}else{
+					if(i==0){
+						printf("I");
+						fprintf(out,"I");
+					}else{
+						printf(",I");
+						fprintf(out,",I");
+					}
+				}
+			}
+		}
+		printf(";)");
+		fprintf(out,";)");
+	}else{
+		printf("V;)");
+		fprintf(out,"V;)");
+	}
+	if(tipo == 0){
+		printf("I\n");
+		fprintf(out,"I\n");
+	}else if(tipo == 1){
+		printf("Ljava/lang/String\n");
+		fprintf(out,"Ljava/lang/String\n");
+	}else{
+		printf("V\n");
+		fprintf(out,"V\n");
+	}
 	printf("  .limit stack 4\n");
 	fprintf(out,"  .limit stack 4\n");
 	printf("  .limit locals 10\n\n");
@@ -511,7 +594,10 @@ void imprime_Tabela(){
 		aux = tabela->topo;
 		
 		while(aux!=NULL){
-			
+			/*if(aux->info.inst == 27){
+				printf("%s\n", aux->info.p3);
+				fprintf(out,"%s\n", aux->info.p3);
+			}*/
 			if(aux->info.p3[0]=='L' && aux->info.inst!=_goto && aux->info.inst<19 && aux->info.inst>24){
 				printf(" %s:\n",aux->info.p3);
 				fprintf(out," %s:\n",aux->info.p3);
