@@ -155,3 +155,4 @@ void fecha_funcao();
 void insere_na_lista_de_funcoes(char id[128],int tipo_retorno,int* parametros);
 void chama_funcao(char id[128],int* parametros);
 int* busca_parametros(char id[128]);
+int tipo_fun(char id[128]);

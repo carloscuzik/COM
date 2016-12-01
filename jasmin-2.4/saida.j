@@ -7,42 +7,78 @@
   return
 .end method
 
-.method public static main([Ljava/lang/String;)V
+.method public static maior(I,I;)Ljava/lang/String
   .limit stack 4
   .limit locals 10
 
-  iconst_1
-  istore_1
+  iload_1
+  iload_0
+  if_icmplt L1
+  goto L2
  L1:
-  iconst_1
-  istore_2
+  getstatic java/lang/System/out Ljava/io/PrintStream;
+  ldc "oi"
+  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+  goto L3
  L2:
   getstatic java/lang/System/out Ljava/io/PrintStream;
-  iload_1
-  invokevirtual java/io/PrintStream/println(I)V
-  getstatic java/lang/System/out Ljava/io/PrintStream;
-  iload_2
-  invokevirtual java/io/PrintStream/println(I)V
-  iconst_1
-  iload_2
-  iadd
-  istore_2
-  getstatic java/lang/System/out Ljava/io/PrintStream;
-  ldc "----"
+  ldc "oi"
   invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-  iload_2
-  iconst_3
-  if_icmpne L2
-  goto L3
  L3:
-  iconst_1
-  iload_1
-  iadd
-  istore_1
-  iload_1
-  bipush 6
-  if_icmpne L1
-  goto L4
- L4:
   return
 .end method
+
+.method public static main(Ljava/lang/String;)V
+  .limit stack 4
+  .limit locals 10
+
+  getstatic java/lang/System/out Ljava/io/PrintStream;
+  ldc "Valor de A:"
+  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+  bipush 10
+  istore_1
+  getstatic java/lang/System/out Ljava/io/PrintStream;
+  ldc "Valor de B:"
+  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+  bipush 10
+  istore_2
+ L4:
+  iload_1
+  iload_2
+  if_icmpne L5
+  goto L10
+ L5:
+  iload_1
+  iload_2
+  if_icmpgt L6
+  goto L7
+ L6:
+  iload_1
+  iload_2
+  isub
+  istore_1
+ L7:
+  iload_2
+  iload_1
+  if_icmpgt L8
+  goto L9
+ L8:
+  iload_2
+  iload_1
+  isub
+  istore_2
+ L9:
+  goto L4
+ L10:
+  iconst_2
+  iconst_2
+invokevirtual maior(I,I;)Ljava/lang/String
+  getstatic java/lang/System/out Ljava/io/PrintStream;
+  ldc "\nRes="
+  invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+  getstatic java/lang/System/out Ljava/io/PrintStream;
+  iload_1
+  invokevirtual java/io/PrintStream/println(I)V
+  return
+.end method
+

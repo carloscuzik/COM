@@ -419,14 +419,39 @@ void insere_na_lista_de_funcoes(char id[128],int tipo_retorno,int* parametros){
 void chama_funcao(char id[128],int* parametros){
 	int* parametros_reais = busca_parametros(id);
 	int i;
-	if(parametros_reais == NULL){
+	strcat(id,"(");
+	if(parametros_reais == NULL && parametros !=NULL || parametros_reais != NULL && parametros == NULL){
 		printf("Função não existe\n");
 		exit(1);
 	}
+	int fim = 0;
 	for(i=0;i<20;i++){
-		if(parametros_reais[i] != parametros[i]){
+		if(parametros_reais[i]==-1){
+			break;
+		}else{
+			fim++;
+		}
+	}
+	for(i=0;i<20;i++){
+		if(parametros_reais[i] == -1 && parametros[i] == -1){
+			break;
+		}
+		if(parametros_reais[i] != parametros[fim-i-1]){
 			printf("Parametros não validos\n");
 			exit(1);
+		}
+		if(parametros[i]==0){
+			if(i==0){
+				strcat(id,"I");
+			}else{
+				strcat(id,",I");
+			}
+		}else{
+			if(i==0){
+				strcat(id,"Ljava/lang/String");
+			}else{
+				strcat(id,",Ljava/lang/String");
+			}
 		}
 	}
 	Codigo aux;
@@ -435,9 +460,27 @@ void chama_funcao(char id[128],int* parametros){
 	char buffer[200];
 	strcat(buffer,"invokevirtual ");
 	strcat(buffer,id);
+	int tipo = tipo_fun(id);
+	if(tipo==2){
+		strcat(buffer,";)V");
+	}else if(tipo == 0){
+		strcat(buffer,";)I");
+	}else{
+		strcat(buffer,";)Ljava/lang/String");
+	}
 	strcpy(aux.p3,buffer);
 	last_label++;
 	tabela = insere_lista(tabela,aux);
+}
+
+int tipo_fun(char id[128]){
+	int i;
+	for(i=0;i<ultima_posicao_da_lista_de_funcoes;i++){
+		if(strcmp(lista_de_funcoes[i].id,id)==0){
+			return lista_de_funcoes[i].tipo_retorno;
+		}
+	}
+	return -1;
 }
 
 int* busca_parametros(char id[128]){

@@ -72,7 +72,7 @@
  L10:
   iconst_2
   iconst_2
-invokevirtual maior
+invokevirtual maior(I,I;)Ljava/lang/String
   getstatic java/lang/System/out Ljava/io/PrintStream;
   ldc "\nRes="
   invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
